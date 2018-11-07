@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
-import click
-import click_completion
 import os
 import logging
-from click_repl import register_repl
-from attrdict import AttrDict
+import click
+import click_completion
+import click_repl
+import attrdict
 from . import helpers
 from .config import project, config, options
 
@@ -61,12 +61,12 @@ class SubCommandLineInterface(helpers.GroupWithHelp):
 @click.pass_context
 def cli(ctx, **kwargs):
     """click-skeleton"""
-    ctx.obj = AttrDict
+    ctx.obj = attrdict.AttrDict
     ctx.obj.folder = bin_folder
     config.set(**kwargs)
     ctx.obj.config = config
 
 
 def main():
-    register_repl(cli)
+    click_repl.register_repl(cli)
     cli()
