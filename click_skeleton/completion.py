@@ -1,3 +1,4 @@
+import os
 import click
 import click_completion
 from . import add_options, AdvancedGroup

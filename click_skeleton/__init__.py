@@ -84,5 +84,3 @@ def run_cli(cli_runner, called_cli, *args):
         logger.critical(f'Failed : {cli_runner.get_default_prog_name()} {elems}')
     assert result.exit_code == 0
     return result.output.rstrip()
-
-
