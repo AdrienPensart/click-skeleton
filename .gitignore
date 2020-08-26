@@ -1,2 +1,14 @@
-dist
+env
+.idea
+venv
 __pycache__
+*.py[cod]
+*.deb
+*.swp
+*.egg-info
+build
+dist
+.coverage
+.coverage.*
+deb_dist
+htmlcov
