@@ -81,6 +81,6 @@ def run_cli(cli_runner, called_cli, *args):
         traceback.print_exception(*result.exc_info)
     if result.exit_code != 0:
         elems = ' '.join(itertools.chain.from_iterable(args))
-        logger.critical(f'Failed : {cli_runner.get_default_prog_name()} {elems}')
+        logger.critical(f'Failed : {cli_runner.get_default_prog_name(called_cli)} {elems}')
     assert result.exit_code == 0
     return result.output.rstrip()
