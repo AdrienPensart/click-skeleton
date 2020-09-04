@@ -4,7 +4,7 @@ build-backend = "poetry.masonry.api"
 
 [tool.poetry]
 name = "click-skeleton"
-version = "0.2.2"
+version = "0.2.3"
 description = "Click app skeleton"
 authors = ["Adrien Pensart"]
 
@@ -18,11 +18,11 @@ click-aliases = "^1.0.1"
 pytest = "^6.0.1"
 click = "^7.1.2"
 colorama = "^0.4.3"
+pytest-click = "^1.0.2"
 
 [tool.poetry.dev-dependencies]
 pytest-cov = "^2.10.1"
 pylint = "^2.6.0"
-pytest-click = "^0.3"
 
 [tool.pytest.ini_options]
 minversion = "6.0"
