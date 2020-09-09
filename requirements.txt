@@ -1,5 +1,5 @@
 atomicwrites==1.4.0; sys_platform == "win32"
-attrs==20.1.0
+attrs==20.2.0
 click==7.1.2
 click-aliases==1.0.1
 click-completion==0.5.2
