@@ -14,4 +14,4 @@ def test_password():
 
 
 def test_raise_limits():
-    assert raise_limits() is True
+    assert raise_limits()

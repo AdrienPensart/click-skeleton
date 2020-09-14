@@ -1,7 +1,6 @@
 import os
 import logging
 import traceback
-import itertools
 import click
 from click_help_colors import HelpColorsGroup
 from click_didyoumean import DYMGroup
@@ -74,13 +73,24 @@ def add_options(options):
     return _add_options
 
 
+def recursive_str(data):
+    if isinstance(data, str):
+        return data
+    if isinstance(data, list):
+        return [recursive_str(x) for x in data]
+    if isinstance(data, dict):
+        return {recursive_str(key): recursive_str(val) for key, val in data.items()}
+    return str(data)
+
+
 def run_cli(cli_runner, called_cli, *args):
     result = cli_runner.invoke(called_cli, *args)
     logger.debug(result.output)
     if result.exception:
         traceback.print_exception(*result.exc_info)
     if result.exit_code != 0:
-        elems = ' '.join(itertools.chain.from_iterable([str(arg) for arg in args]))
-        logger.critical(f'Failed : {cli_runner.get_default_prog_name(called_cli)} {elems}')
+        elems = recursive_str(*args)
+        elems = ' '.join(elems)
+        logger.error(f'Failed : {cli_runner.get_default_prog_name(called_cli)} {elems}')
     assert result.exit_code == 0
     return result.output.rstrip()
