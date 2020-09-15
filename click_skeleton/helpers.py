@@ -4,26 +4,27 @@ import platform
 import re
 import string
 import random
+from typing import List, Any
 
 logger = logging.getLogger(__name__)
 true_values = ('enabled', 'y', 'yes', 't', 'true', 'True', 'on', '1')
 false_values = ('disabled', 'n', 'no', 'f', 'false', 'False', 'off', '0')
 
 
-def str2bool(val):
+def str2bool(val: Any) -> bool:
     val = str(val).lower()
     if val in true_values:
         return True
     if val in false_values:
-        return 0
+        return False
     raise ValueError(f"invalid truth value {val}")
 
 
-def str_is_true(v):
+def str_is_true(v: str):
     return str(v).lower() in true_values
 
 
-def str_is_false(v):
+def str_is_false(v: str):
     return str(v).lower() in false_values
 
 
@@ -34,6 +35,16 @@ def seconds_to_human(s) -> str:
 def strip_colors(text) -> str:
     ansi_escape = re.compile(r'\x1B(?:[@-Z\\-_]|\[[0-?]*[ -/]*[@-~])')
     return ansi_escape.sub('', text)
+
+
+def mysplit(s: str, delim: str = ',') -> List[str]:
+    if isinstance(s, list):
+        return s
+    if s is None:
+        return []
+    if isinstance(s, str):
+        return [x for x in s.split(delim) if x]
+    raise ValueError(s)
 
 
 def raise_limits() -> bool:
