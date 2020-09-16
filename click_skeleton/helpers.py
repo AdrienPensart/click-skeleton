@@ -4,6 +4,7 @@ import platform
 import re
 import string
 import random
+import collections
 from typing import List, Any
 
 logger = logging.getLogger(__name__)
@@ -49,12 +50,12 @@ def mysplit(s: str, delim: str = ',') -> List[str]:
 
 def raise_limits() -> bool:
     if platform.system() == 'Windows':
-        logger.debug('Cannot raise system limits on Windows')
+        logger.warning('Cannot raise system limits on Windows')
         return False
     import resource  # pylint: disable=import-error
     try:
         soft, hard = resource.getrlimit(resource.RLIMIT_NOFILE)
-        logger.info(f"Current limits, soft and hard : {soft} {hard}", soft, hard)
+        logger.info(f"Current limits, soft and hard : {soft} {hard}")
         resource.setrlimit(resource.RLIMIT_NOFILE, (hard, hard))
         return True
     except (ValueError, OSError) as e:
@@ -65,6 +66,10 @@ def raise_limits() -> bool:
 def random_password(size: int = 8) -> str:
     alphabet = string.ascii_letters + string.digits
     return ''.join(random.choice(alphabet) for i in range(size))
+
+
+class PrettyDefaultDict(collections.defaultdict):
+    __repr__ = dict.__repr__
 
 
 Red = "\033[0;31;40m"
