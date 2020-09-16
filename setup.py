@@ -15,7 +15,7 @@ readme = ''
 setup(
     long_description=readme,
     name='click-skeleton',
-    version='0.3.1',
+    version='0.3.2',
     description='Click app skeleton',
     python_requires='<4.0,>=3.6',
     author='Adrien Pensart',
