@@ -4,7 +4,7 @@ build-backend = "poetry.masonry.api"
 
 [tool.poetry]
 name = "click-skeleton"
-version = "0.2.10"
+version = "0.3.0"
 description = "Click app skeleton"
 authors = ["Adrien Pensart"]
 
