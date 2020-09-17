@@ -1,3 +1,4 @@
+import platform
 import pytest
 from click_skeleton.helpers import str2bool, random_password, raise_limits
 
@@ -14,4 +15,7 @@ def test_password():
 
 
 def test_raise_limits():
-    assert raise_limits()
+    if 'macOS' in platform.platform():
+        assert raise_limits() is False
+    else:
+        assert raise_limits() is True
