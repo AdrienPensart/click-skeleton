@@ -1,7 +1,6 @@
 import os
 import sys
 import traceback
-import colorama
 from colorama import Fore, Style
 
 
@@ -143,9 +142,6 @@ def hook(reverse=False,
             styles[k] = styles.get(k, v)
     else:
         styles = STYLES
-
-    # For Windows
-    colorama.init()
 
     def backtrace_excepthook(tpe, value, tb=None):
         # Don't know if we're getting traceback or traceback entries.

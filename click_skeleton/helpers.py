@@ -70,10 +70,3 @@ def random_password(size: int = 8) -> str:
 
 class PrettyDefaultDict(collections.defaultdict):
     __repr__ = dict.__repr__
-
-
-Red = "\033[0;31;40m"
-Green = "\033[0;32;40m"
-Yellow = "\033[0;33;40m"
-Blue = "\033[0;34m;40m"
-Reset = "\033[0m"

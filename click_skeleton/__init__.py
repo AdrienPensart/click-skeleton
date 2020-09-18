@@ -2,11 +2,13 @@ import os
 import logging
 import traceback
 import click
+import colorama
 from click_help_colors import HelpColorsGroup
 from click_didyoumean import DYMGroup
 from click_aliases import ClickAliasedGroup
 
 logger = logging.getLogger(__name__)
+colorama.init(autoreset=True)
 
 
 class ExpandedPath(click.Path):
