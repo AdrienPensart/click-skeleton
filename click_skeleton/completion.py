@@ -1,6 +1,6 @@
 import os
 import click
-import click_completion
+import click_completion  # type: ignore
 from . import add_options, AdvancedGroup
 
 

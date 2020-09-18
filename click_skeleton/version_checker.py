@@ -4,7 +4,7 @@ import re
 from html.parser import HTMLParser
 import click
 import requests
-import semver
+import semver  # type: ignore
 
 
 logger = logging.getLogger(__name__)

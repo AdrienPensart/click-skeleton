@@ -2,10 +2,10 @@ import os
 import logging
 import traceback
 import click
-import colorama
-from click_help_colors import HelpColorsGroup
-from click_didyoumean import DYMGroup
-from click_aliases import ClickAliasedGroup
+import colorama  # type: ignore
+from click_help_colors import HelpColorsGroup  # type: ignore
+from click_didyoumean import DYMGroup  # type: ignore
+from click_aliases import ClickAliasedGroup  # type: ignore
 
 logger = logging.getLogger(__name__)
 colorama.init(autoreset=True)

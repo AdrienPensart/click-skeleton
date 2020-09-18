@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "click-skeleton"
-version = "0.3.4"
+version = "0.3.5"
 description = "Click app skeleton"
 authors = ["Adrien Pensart"]
 
@@ -21,6 +21,7 @@ requests = "^2.24.0"
 [tool.poetry.dev-dependencies]
 pytest-cov = "^2.10.1"
 pylint = "^2.6.0"
+mypy = "^0.782"
 
 [tool.pytest.ini_options]
 minversion = "6.0"

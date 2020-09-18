@@ -1,7 +1,7 @@
 import os
 import sys
 import traceback
-from colorama import Fore, Style
+from colorama import Fore, Style  # type: ignore
 
 
 TRACEBACK_IDENTIFIER = 'Traceback (most recent call last):\n'
