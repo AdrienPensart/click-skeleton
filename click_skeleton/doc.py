@@ -6,7 +6,8 @@ from . import AdvancedGroup
 def gen_doc(main_cli, prog_name, CONTEXT_SETTINGS):
     click.echo("Commands\n--------")
     click.echo(".. code-block::\n")
-    with click.Context(main_cli, info_name=prog_name, **CONTEXT_SETTINGS) as base_ctx:
+    base_ctx = click.Context(main_cli, info_name=prog_name, **CONTEXT_SETTINGS)
+    with base_ctx.scope():
         cli_help = main_cli.get_help(base_ctx)
         cli_help = indent(cli_help, '  ')
         click.echo(cli_help)
@@ -20,7 +21,8 @@ def gen_doc(main_cli, prog_name, CONTEXT_SETTINGS):
             click.echo('*' * len(command_title))
             click.echo(".. code-block::\n")
 
-            with click.Context(command, info_name=command_name, parent=base_ctx) as command_ctx:
+            command_ctx = click.Context(command, info_name=command_name, parent=base_ctx)
+            with command_ctx.scope():
                 command_help = command.get_help(command_ctx)
                 command_help = indent(command_help, '  ')
                 click.echo(command_help)
@@ -37,7 +39,8 @@ def gen_doc(main_cli, prog_name, CONTEXT_SETTINGS):
                 click.echo(subcommand_title)
                 click.echo('*' * len(subcommand_title))
                 click.echo(".. code-block::\n")
-                with click.Context(subcommand, info_name=subcommand_name, parent=command_ctx) as subcommand_ctx:
+                subcommand_ctx = click.Context(subcommand, info_name=subcommand_name, parent=command_ctx)
+                with subcommand_ctx.scope():
                     subcommand_help = subcommand.get_help(subcommand_ctx)
                     subcommand_help = indent(subcommand_help, '  ')
                     click.echo(subcommand_help)

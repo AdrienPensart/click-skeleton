@@ -40,7 +40,10 @@ class VersionCheckerThread(threading.Thread):
             p = MyParser()
             p.feed(resp.text)
             last_link = p.output_list[-1]
-            last_version = re.search(r'(?:(\d+\.[.\d]*\d+))', last_link).group(1)
+            last_version_matches = re.search(r'(?:(\d+\.[.\d]*\d+))', last_link)
+            if not last_version_matches:
+                return
+            last_version = last_version_matches.group(1)
             extra_index_url = ''
             if self.domain != DEFAULT_PYPI:
                 extra_index_url = f'--extra-index-url=https://{self.domain} '

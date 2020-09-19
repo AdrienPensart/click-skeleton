@@ -1,8 +1,9 @@
 import os
 import logging
 import traceback
-import click
+from typing import Optional
 import colorama  # type: ignore
+import click
 from click_help_colors import HelpColorsGroup  # type: ignore
 from click_didyoumean import DYMGroup  # type: ignore
 from click_aliases import ClickAliasedGroup  # type: ignore
@@ -11,12 +12,44 @@ logger = logging.getLogger(__name__)
 colorama.init(autoreset=True)
 
 
-class ExpandedPath(click.Path):
+class ExpandedPath(click.ParamType):
+    envvar_list_splitter = os.path.pathsep
+
+    def __init__(
+        self,
+        exists: bool = False,
+        file_okay: bool = True,
+        dir_okay: bool = True,
+        writable: bool = False,
+        readable: bool = True,
+        resolve_path: bool = False,
+        allow_dash: bool = False,
+        path_type: Optional[str] = None,
+    ):
+        self.exists = exists
+        self.file_okay = file_okay
+        self.dir_okay = dir_okay
+        self.writable = writable
+        self.readable = readable
+        self.resolve_path = resolve_path
+        self.allow_dash = allow_dash
+        self.type = path_type
+
+        if self.file_okay and not self.dir_okay:
+            self.name = "file"
+            self.path_type = "File"
+        elif self.dir_okay and not self.file_okay:
+            self.name = "directory"
+            self.path_type = "Directory"
+        else:
+            self.name = "path"
+            self.path_type = "Path"
+
     def convert(self, value, param, ctx):
         value = os.path.expanduser(value)
         is_dash = self.file_okay and self.allow_dash and value in (b"-", "-")
         if is_dash:
-            return self.coerce_path_result(value)
+            return value
 
         if self.resolve_path:
             value = os.path.realpath(value)
@@ -44,7 +77,7 @@ class ExpandedPath(click.Path):
             if not os.access(pdir, os.R_OK):
                 self.fail(f"{self.path_type} {value} is not readable.", param, ctx)
 
-        return self.coerce_path_result(value)
+        return value
 
 
 class AdvancedGroup(DYMGroup, ClickAliasedGroup, HelpColorsGroup):
