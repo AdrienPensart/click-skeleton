@@ -87,7 +87,7 @@ class AdvancedGroup(DYMGroup, ClickAliasedGroup, HelpColorsGroup):
         super().__init__(*args, **kwargs)
 
         @click.command('help')
-        @click.argument('command', required=False)
+        @click.argument('command', nargs=-1)
         @click.pass_context
         def _help(ctx, command):
             '''Print help'''
