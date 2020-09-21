@@ -12,7 +12,12 @@ from click_didyoumean import DYMGroup  # type: ignore
 from click_aliases import ClickAliasedGroup  # type: ignore
 
 logger = logging.getLogger(__name__)
+
+# enable colors by default
 colorama.init(autoreset=True)
+
+# little hacky but prevent click from rewraping
+click.formatting.HelpFormatter.write_dl.__defaults__ = (50, 2)  # type: ignore
 
 
 def sensible_context_settings(**kwargs: Any) -> Dict[str, Any]:
