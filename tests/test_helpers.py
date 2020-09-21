@@ -1,9 +1,11 @@
+'''Helpers tests'''
 import platform
 import pytest
 from click_skeleton.helpers import str2bool, random_password, raise_limits
 
 
 def test_str2bool():
+    '''Test that we are parsing bool string correctly'''
     assert str2bool('Y')
     assert not str2bool('N')
     with pytest.raises(Exception):
@@ -11,10 +13,12 @@ def test_str2bool():
 
 
 def test_password():
+    '''Two random password has very high probability to be different'''
     assert random_password() != random_password()
 
 
 def test_raise_limits():
+    '''Important helper as we may need a lot of file handles, does not work on Mac OS X'''
     if 'macOS' in platform.platform():
         assert raise_limits() is False
     else:

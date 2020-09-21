@@ -1,6 +1,9 @@
+'''Replace default stacktrace printing with a beautiful one'''
 import os
 import sys
 import traceback
+from typing import Any, Dict, Union, List, Tuple, Optional
+from types import TracebackType
 from colorama import Fore, Style  # type: ignore
 
 
@@ -13,7 +16,6 @@ STYLES = {
     'context': Style.BRIGHT + Fore.GREEN + '{0}',
     'call': Fore.YELLOW + '--> ' + Style.BRIGHT + '{0}',
 }
-
 CONVERVATIVE_STYLES = {
     'backtrace': Fore.YELLOW + '{0}',
     'error': Fore.RED + Style.BRIGHT + '{0}',
@@ -24,26 +26,30 @@ CONVERVATIVE_STYLES = {
 }
 
 
-def _flush(message):
+def _flush(message: str) -> None:
+    '''Print message and flush stderr'''
     sys.stderr.write(message + '\n')
     sys.stderr.flush()
 
 
 class _Hook:
+    '''Stacktrace hook'''
     def __init__(self,
-                 entries,
-                 align=False,
-                 strip_path=False,
-                 conservative=False):
+                 entries: Any,
+                 align: bool = False,
+                 strip_path: bool = False,
+                 conservative: bool = False):
         self.entries = entries
         self.align = align
         self.strip = strip_path
         self.conservative = conservative
 
-    def reverse(self):
+    def reverse(self) -> None:
+        '''Reverse stacktrace entries to ease reading'''
         self.entries = self.entries[::-1]
 
-    def rebuild_entry(self, entry, styles):
+    def rebuild_entry(self, entry: Any, styles: Dict[str, str]) -> Any:
+        '''Rebuild context of entry'''
         entry = list(entry)
         # This is the file path.
         entry[0] = os.path.basename(entry[0]) if self.strip else entry[0]
@@ -62,51 +68,51 @@ class _Hook:
         return new_entry
 
     @staticmethod
-    def align_all(entries):
+    def align_all(entries: Any) -> List[int]:
+        '''Align all stacktrace entries'''
         lengths = [0, 0, 0, 0]
-
         for entry in entries:
             for index, field in enumerate(entry):
                 lengths[index] = max(lengths[index], len(str(field)))
         return lengths
 
     @staticmethod
-    def align_entry(entry, lengths):
+    def align_entry(entry: Any, lengths: List[int]) -> str:
+        '''Align one stacktrace entry'''
         return ' '.join(
             ['{0:{1}}'.format(field, lengths[index])
-             for index, field in enumerate(entry)])
+             for index, field in enumerate(entry)]
+        )
 
-    def generate_backtrace(self, styles):
-        """Return the (potentially) aligned, rebuit traceback
+    def generate_backtrace(self, styles: Dict[str, str]) -> List[str]:
+        '''Return the (potentially) aligned, rebuit traceback
 
         Yes, we iterate over the entries thrice. We sacrifice
         performance for code readability. I mean.. come on, how long can
         your traceback be that it matters?
-        """
+        '''
         backtrace = []
         for entry in self.entries:
             backtrace.append(self.rebuild_entry(entry, styles))
 
         # Get the lenght of the longest string for each field of an entry
         lengths = self.align_all(backtrace) if self.align else [1, 1, 1, 1]
-
-        aligned_backtrace = []
-        for entry in backtrace:
-            aligned_backtrace.append(self.align_entry(entry, lengths))
-        return aligned_backtrace
+        return [self.align_entry(entry, lengths) for entry in backtrace]
 
 
-def hook(reverse=False,
-         align=False,
-         strip_path=False,
-         enable_on_envvar_only=False,
-         on_tty=False,
-         conservative=False,
-         styles=None,
-         tb=None,
-         tpe=None,
-         value=None):
-    """Hook the current excepthook to the backtrace.
+def hook(
+    reverse: bool = False,
+    align: bool = False,
+    strip_path: bool = False,
+    enable_on_envvar_only: bool = False,
+    on_tty: bool = False,
+    conservative: bool = False,
+    styles: Optional[Dict[str, str]] = None,
+    trace: Optional[TracebackType] = None,
+    tpe: Optional[type] = None,
+    value: Optional[BaseException] = None,
+) -> None:
+    '''Hook the current excepthook to the backtrace.
 
     If `align` is True, all parts (line numbers, file names, etc..) will be
     aligned to the left according to the longest entry.
@@ -126,7 +132,7 @@ def hook(reverse=False,
 
     See https://github.com/nir0s/backtrace/blob/master/README.md for
     information on `styles`.
-    """
+    '''
     if enable_on_envvar_only and 'ENABLE_BACKTRACE' not in os.environ:
         return
 
@@ -134,54 +140,65 @@ def hook(reverse=False,
     if on_tty and not isatty():
         return
 
+    chosen_styles: Dict[str, str]
     if conservative:
-        styles = CONVERVATIVE_STYLES
+        chosen_styles = CONVERVATIVE_STYLES
         align = align or False
     elif styles:
-        for k, v in STYLES.items():
-            styles[k] = styles.get(k, v)
+        for key, default_value in STYLES.items():
+            chosen_styles[key] = styles.get(key, default_value)
     else:
-        styles = STYLES
+        chosen_styles = STYLES
 
-    def backtrace_excepthook(tpe, value, tb=None):
-        # Don't know if we're getting traceback or traceback entries.
-        # We'll try to parse a traceback object.
+    def backtrace_excepthook(
+        tpe: Optional[Union[str, type]],
+        value: Optional[BaseException],
+        trace: Optional[TracebackType] = None,
+    ) -> None:
+        '''Don't know if we're getting traceback or traceback entries.
+        We'll try to parse a traceback object.
+        '''
         try:
-            traceback_entries = traceback.extract_tb(tb)
+            traceback_entries = traceback.extract_tb(trace)
+            parser = _Hook(traceback_entries, align, strip_path, conservative)
         except AttributeError:
-            traceback_entries = tb
-        parser = _Hook(traceback_entries, align, strip_path, conservative)
+            parser = _Hook(trace, align, strip_path, conservative)
 
-        tpe = tpe if isinstance(tpe, str) else tpe.__name__
-        tb_message = styles['backtrace'].format('Traceback ({0}):'.format(
+        if tpe is None:
+            type_str = 'unknown'
+        elif isinstance(tpe, str):
+            type_str = tpe
+        else:
+            type_str = tpe.__name__
+
+        tb_message = chosen_styles['backtrace'].format('Traceback ({0}):'.format(
             'Most recent call ' + ('first' if reverse else 'last'))) + \
             Style.RESET_ALL
-        err_message = styles['error'].format(tpe + ': ' + str(value)) + \
+        err_message = chosen_styles['error'].format(type_str + ': ' + str(value)) + \
             Style.RESET_ALL
 
         if reverse:
             parser.reverse()
 
         _flush(tb_message)
-        backtrace = parser.generate_backtrace(styles)
+        backtrace = parser.generate_backtrace(chosen_styles)
         backtrace.insert(0 if reverse else len(backtrace), err_message)
         for entry in backtrace:
             _flush(entry)
 
-    if tb:
-        backtrace_excepthook(tpe=tpe, value=value, tb=tb)
+    if trace:
+        backtrace_excepthook(tpe=tpe, value=value, trace=trace)
     else:
         sys.excepthook = backtrace_excepthook
 
 
-def unhook():
-    """Restore the default excepthook
-    """
+def unhook() -> None:
+    '''Restore the default excepthook'''
     sys.excepthook = sys.__excepthook__
 
 
-def _extract_traceback(text):
-    """Receive a list of strings representing the input from stdin and return
+def _extract_traceback(text: str) -> Tuple[List[Tuple[str, str, str]], List[str]]:
+    '''Receive a list of strings representing the input from stdin and return
     the restructured backtrace.
 
     This iterates over the output and once it identifies a hopefully genuine
@@ -194,7 +211,7 @@ def _extract_traceback(text):
 
     Note that all parts of each stack object are stripped from newlines and
     spaces to keep the output clean.
-    """
+    '''
     capture = False
     entries = []
     all_else = []
@@ -235,12 +252,11 @@ def _extract_traceback(text):
             all_else.append(line)
 
     traceback_entries = []
-
     # Build the traceback structure later passed for formatting.
     for _, line in enumerate(entries[:-2]):
         element = line.split(',', 3)
-        element[0] = element[0].strip().lstrip('File').strip(' "')
-        element[1] = element[1].strip().lstrip('line').strip()
-        element[2] = element[2].strip().lstrip('in').strip()
-        traceback_entries.append(tuple(element))
+        _file = element[0].strip().lstrip('File').strip(' "')
+        _line = element[1].strip().lstrip('line').strip()
+        _in = element[2].strip().lstrip('in').strip()
+        traceback_entries.append((_file, _line, _in))
     return traceback_entries, all_else

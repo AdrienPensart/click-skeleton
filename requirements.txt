@@ -1,4 +1,5 @@
 atomicwrites==1.4.0; sys_platform == "win32"
+attrdict==2.0.1
 attrs==20.2.0
 certifi==2020.6.20
 chardet==3.0.4

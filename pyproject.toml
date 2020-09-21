@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "click-skeleton"
-version = "0.4.2"
+version = "0.5.0"
 description = "Click app skeleton"
 authors = ["Adrien Pensart"]
 
@@ -17,12 +17,15 @@ colorama = "^0.4.3"
 pytest-click = "^1.0.2"
 semver = "^2.10.2"
 requests = "^2.24.0"
+attrdict = "^2.0.1"
 
 [tool.poetry.dev-dependencies]
 pytest-cov = "^2.10.1"
 pylint = "^2.6.0"
 mypy = "^0.782"
 pytype = "^2020.9.16"
+coverage-badge = "^1.0.1"
+flake8 = "^3.8.3"
 
 [tool.pytest.ini_options]
 minversion = "6.0"
@@ -32,7 +35,7 @@ addopts = "--cov-report term-missing:skip-covered --cov-report html --disable-py
 jobs = 4
 [tool.pylint.messages_control]
 disable = """
-disable=too-few-public-methods,logging-format-interpolation,line-too-long,too-many-arguments,protected-access,missing-docstring,invalid-name,too-many-public-methods,too-many-instance-attributes,duplicate-code,too-many-nested-blocks,too-many-branches,too-many-return-statements,too-many-statements,too-many-locals,too-few-public-methods,too-many-ancestors,abstract-method,anomalous-backslash-in-string,import-outside-toplevel,redefined-outer-name,unnecessary-lambda,c-extension-no-member,logging-fstring-interpolation
+disable=too-many-instance-attributes,too-few-public-methods,logging-format-interpolation,line-too-long,too-many-arguments,protected-access,too-many-public-methods,too-many-instance-attributes,duplicate-code,too-many-nested-blocks,too-many-branches,too-many-return-statements,too-many-statements,too-many-locals,too-few-public-methods,too-many-ancestors,import-outside-toplevel,c-extension-no-member,logging-fstring-interpolation
 """
 
 [tool.dephell.main]

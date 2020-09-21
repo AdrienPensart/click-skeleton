@@ -1,12 +1,19 @@
+'''Generates a readme composed of all commands and subcommands help strings'''
 from textwrap import indent
+from typing import Dict, Any
 import click
 from . import AdvancedGroup
 
 
-def gen_doc(main_cli, prog_name, CONTEXT_SETTINGS):
+def gen_doc(
+    main_cli: click.core.Group,
+    prog_name: str,
+    context_settings: Dict[str, Any]
+) -> Any:
+    '''Recursively output a beautiful readme on stdout, supports 3 levels of subcommands'''
     click.echo("Commands\n--------")
     click.echo(".. code-block::\n")
-    base_ctx = click.Context(main_cli, info_name=prog_name, **CONTEXT_SETTINGS)
+    base_ctx = click.Context(main_cli, info_name=prog_name, **context_settings)
     with base_ctx.scope():
         cli_help = main_cli.get_help(base_ctx)
         cli_help = indent(cli_help, '  ')
