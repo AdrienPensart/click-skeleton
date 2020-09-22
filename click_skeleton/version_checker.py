@@ -46,7 +46,7 @@ class VersionCheckerThread(threading.Thread):
         self.new_version_warning: Optional[str] = None
         self.domain = domain
         self.current_version = current_version
-        self.url = f'https://{domain}/simple/{prog_name}'
+        self.url = f'https://{domain}/simple/{prog_name}/'
         if autostart:
             self.start()
 
@@ -83,4 +83,4 @@ upgrade command : pip3 install -U {extra_index_url}{self.prog_name}''',
         if self.new_version_warning:
             click.echo(self.new_version_warning, err=True)
         else:
-            logger.debug(f'{self.prog_name} : no new version available')
+            logger.debug(f'{self.prog_name} : no new version available')  # pylint: disable=logging-fstring-interpolation

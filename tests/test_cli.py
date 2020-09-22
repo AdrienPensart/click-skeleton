@@ -3,7 +3,7 @@ import logging
 import pytest
 from click_skeleton import run_cli
 from click_skeleton.helpers import strip_colors
-from examples.cli import cli, __version__
+from examples.cli import main_cli, __version__
 
 logger = logging.getLogger(__name__)
 
@@ -11,15 +11,15 @@ logger = logging.getLogger(__name__)
 @pytest.mark.runner_setup(mix_stderr=False)
 def test_cli(cli_runner) -> None:
     '''Test that CLI does not crash without any argument or options'''
-    run_cli(cli_runner, cli)
+    run_cli(cli_runner, main_cli)
 
 
 @pytest.mark.runner_setup(mix_stderr=False)
 def test_cli_version(cli_runner) -> None:
     '''Test that CLI version string is the same using all methods'''
-    output1 = strip_colors(run_cli(cli_runner, cli, ['-V']))
-    output2 = strip_colors(run_cli(cli_runner, cli, ['--version']))
-    output3 = strip_colors(run_cli(cli_runner, cli, ['version']))
+    output1 = strip_colors(run_cli(cli_runner, main_cli, ['-V']))
+    output2 = strip_colors(run_cli(cli_runner, main_cli, ['--version']))
+    output3 = strip_colors(run_cli(cli_runner, main_cli, ['version']))
     assert output1 == output2 == output3
     assert __version__ in output1
 
@@ -27,19 +27,31 @@ def test_cli_version(cli_runner) -> None:
 @pytest.mark.runner_setup(mix_stderr=False)
 def test_cli_help(cli_runner) -> None:
     '''Test that CLI help string is the same using all methods'''
-    output1 = strip_colors(run_cli(cli_runner, cli, ['-h']))
-    output2 = strip_colors(run_cli(cli_runner, cli, ['--help']))
-    output3 = strip_colors(run_cli(cli_runner, cli, ['help']))
+    output1 = strip_colors(run_cli(cli_runner, main_cli, ['-h']))
+    output2 = strip_colors(run_cli(cli_runner, main_cli, ['--help']))
+    output3 = strip_colors(run_cli(cli_runner, main_cli, ['help']))
     assert output1 == output2 == output3
 
 
 @pytest.mark.runner_setup(mix_stderr=False)
 def test_readme(cli_runner) -> None:
     '''Test readme generation'''
-    run_cli(cli_runner, cli, ["readme"])
+    run_cli(cli_runner, main_cli, ["readme"])
 
 
 @pytest.mark.runner_setup(mix_stderr=False)
 def test_completion_show(cli_runner) -> None:
     '''Test generation of completion shell code'''
-    run_cli(cli_runner, cli, ["completion", "show", "zsh"])
+    run_cli(cli_runner, main_cli, ["completion", "show", "zsh"])
+
+
+@pytest.mark.runner_setup(mix_stderr=False)
+def test_subgroup(cli_runner) -> None:
+    '''Test if subgroup is working'''
+    run_cli(cli_runner, main_cli, ["subgroup"])
+
+
+@pytest.mark.runner_setup(mix_stderr=False)
+def test_subcommand(cli_runner) -> None:
+    '''Test if subcommand is working'''
+    run_cli(cli_runner, main_cli, ["subgroup", "subcommand"])
