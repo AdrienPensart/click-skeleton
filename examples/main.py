@@ -3,8 +3,9 @@
 import sys
 import logging
 from typing import Any
+import click
 from click_skeleton import helpers, backtrace, version_checker
-import examples.commands as commands
+from examples import commands
 from examples.cli import main_cli, PROG_NAME, __version__
 
 logger = logging.getLogger(__name__)
@@ -22,7 +23,7 @@ backtrace.hook(
 def main(**kwargs: Any) -> int:
     '''click skeleton entrypoint, it will check if a new version is available'''
     helpers.raise_limits()
-    logger.debug(f"Imported commands: {commands.modules}")
+    click.secho(f"Imported commands: {commands.modules}", fg="bright_blue")
     version_check = version_checker.VersionCheckerThread(
         prog_name=PROG_NAME,
         current_version=__version__,

@@ -15,7 +15,8 @@ def import_all_modules(path: str, env: Dict[str, Any]) -> List[str]:
     modules = []
     for module_name in sorted(get_module_names_in_dir(absolute_dirname)):
         env[module_name] = __import__(module_name, env)
-        modules.append(module_name)
+        if module_name != '__init__':
+            modules.append(module_name)
     return modules
 
 
