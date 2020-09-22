@@ -3,7 +3,8 @@ import os
 from typing import Optional
 import click
 import click_completion  # type: ignore
-from . import add_options, AdvancedGroup
+from click_skeleton.advanced_group import AdvancedGroup
+from click_skeleton.core import add_options
 
 
 completion_options = [
@@ -29,21 +30,21 @@ append_option = [
 ]
 
 
-@click.group(short_help="Shell completion", cls=AdvancedGroup)
-def completion() -> None:
+@click.group('completion', short_help="Shell completion", cls=AdvancedGroup)
+def completion_cli() -> None:
     '''Shell completion subcommand'''
 
 
-@completion.command(short_help='Show the click-completion-command completion code', aliases=['print', 'generate'])
-@add_options(completion_options)  # type: ignore
+@completion_cli.command(short_help='Show the click-completion-command completion code', aliases=['print', 'generate'])
+@add_options(completion_options)
 def show(shell: str, case_insensitive: bool) -> None:
     '''Generate shell code to enable completion'''
     extra_env = {'_CLICK_COMPLETION_COMMAND_CASE_INSENSITIVE_COMPLETE': 'ON'} if case_insensitive else {}
     click.echo(click_completion.core.get_code(shell, extra_env=extra_env))
 
 
-@completion.command(short_help='Install the click-completion-command completion')
-@add_options(completion_options + append_option)  # type: ignore
+@completion_cli.command(short_help='Install the click-completion-command completion')
+@add_options(completion_options + append_option)
 @click.argument('path', required=False)
 def install(append: bool, case_insensitive: bool, shell: str, path: Optional[str]) -> None:
     '''Auto install shell completion code in your rc file'''

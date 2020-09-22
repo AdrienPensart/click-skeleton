@@ -54,12 +54,22 @@ class VersionCheckerThread(threading.Thread):
         '''This threads auto-start by default and store a result you can read at end of program execution'''
         try:
             resp = requests.get(self.url)
+            if not resp.ok:
+                logger.info(f'{self.prog_name} : unable to fetch {self.url} : {resp.text}')  # pylint: disable=logging-fstring-interpolation
+                return
+
             parser = MyParser()
             parser.feed(resp.text)
+            if not parser.output_list:
+                logger.info(f'{self.prog_name} : no packages links detected in {resp.text}')  # pylint: disable=logging-fstring-interpolation
+                return
+
             last_link = parser.output_list[-1]
             last_version_matches = re.search(r'(?:(\d+\.[.\d]*\d+))', last_link)
             if not last_version_matches:
+                logger.info(f'{self.prog_name} : no version found in string {last_link}')  # pylint: disable=logging-fstring-interpolation
                 return
+
             last_version = last_version_matches.group(1)
             extra_index_url = ''
             if self.domain != DEFAULT_PYPI:
@@ -83,4 +93,4 @@ upgrade command : pip3 install -U {extra_index_url}{self.prog_name}''',
         if self.new_version_warning:
             click.echo(self.new_version_warning, err=True)
         else:
-            logger.debug(f'{self.prog_name} : no new version available')  # pylint: disable=logging-fstring-interpolation
+            logger.info(f'{self.prog_name} : no new version available')  # pylint: disable=logging-fstring-interpolation

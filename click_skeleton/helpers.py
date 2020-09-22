@@ -12,6 +12,17 @@ true_values = ('enabled', 'y', 'yes', 't', 'true', 'True', 'on', '1')
 false_values = ('disabled', 'n', 'no', 'f', 'false', 'False', 'off', '0')
 
 
+def recursive_str(data: Any) -> Any:
+    '''Recursively convert multiple data type to string'''
+    if isinstance(data, str):
+        return data
+    if isinstance(data, list):
+        return [recursive_str(x) for x in data]
+    if isinstance(data, dict):
+        return {recursive_str(key): recursive_str(val) for key, val in data.items()}
+    return str(data)
+
+
 def str2bool(val: Any) -> bool:
     '''Converts any value to string and detects if it looks like a known bool value'''
     val = str(val).lower()

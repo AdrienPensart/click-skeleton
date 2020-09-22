@@ -1,7 +1,7 @@
 '''Test example CLI'''
 import logging
 import pytest
-from click_skeleton import run_cli
+from click_skeleton.testing import run_cli
 from click_skeleton.helpers import strip_colors
 from examples.cli import main_cli, __version__
 

@@ -21,8 +21,9 @@ echo "lint : flake8..."
 poetry run flake8 click_skeleton examples tests
 
 echo "static type checking : mypy..."
-# skip mypy for tests at the moment
-poetry run mypy click_skeleton examples --strict
+# skip mypy for tests folder
+poetry run mypy click_skeleton examples --strict --allow-untyped-decorators
+
 echo "static type checking : pytype..."
 poetry run pytype click_skeleton examples tests -j auto -k
 
