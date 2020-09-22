@@ -37,4 +37,15 @@ class AdvancedGroup(DYMGroup, ClickAliasedGroup, HelpColorsGroup):  # type: igno
                 if not ctx.parent:
                     raise RuntimeError('no click context parent available')
                 print(ctx.parent.get_help())
-        self.add_command(_help)
+        self.add_command(_help, 'help')
+
+
+class RootAdvancedGroup(AdvancedGroup):
+    '''Group to use for root main CLI, include completion and version commands'''
+    def __init__(self, *args: Any, **kwargs: Any):
+        super().__init__(*args, **kwargs)
+        # avoid circular dependencies
+        from click_skeleton.version import version_cmd
+        from click_skeleton.completion import completion_cli
+        self.add_command(completion_cli, 'completion')
+        self.add_command(version_cmd, 'version')

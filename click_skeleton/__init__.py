@@ -4,7 +4,8 @@ import colorama  # type: ignore
 import click
 from click_skeleton.advanced_group import AdvancedGroup
 from click_skeleton.expanded_path import ExpandedPath
-from click_skeleton.core import add_options, skeleton, sensible_context_settings
+from click_skeleton.core import skeleton, sensible_context_settings
+from click_skeleton.decorators import add_options
 
 logger = logging.getLogger(__name__)
 

@@ -4,7 +4,7 @@ from typing import Optional
 import click
 import click_completion  # type: ignore
 from click_skeleton.advanced_group import AdvancedGroup
-from click_skeleton.core import add_options
+from click_skeleton.decorators import add_options
 
 
 completion_options = [

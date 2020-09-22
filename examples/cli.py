@@ -2,18 +2,29 @@
 import logging
 from typing import Any
 import click
-from click_skeleton import skeleton, sensible_context_settings, doc
+from click_skeleton import add_options, skeleton, sensible_context_settings, doc
 
 PROG_NAME = 'example-cli'
 __version__ = '1.0.0'
 CONTEXT_SETTINGS = sensible_context_settings(PROG_NAME, __version__, auto_envvar_prefix='CLI')
 logger = logging.getLogger(PROG_NAME)
 
+global_example_option = click.option('--global-example', help="A global option")
+group_of_options = [
+    click.option('--option-one', help="First option"),
+    click.option('--option-two', help="Second option"),
+]
+
 
 @skeleton(context_settings=CONTEXT_SETTINGS)
 @click.pass_context
-def main_cli(ctx: click.Context) -> Any:
+@add_options(global_example_option, group_of_options)
+def main_cli(ctx: click.Context, global_example: str, option_one: str, option_two: str) -> Any:
     """Simple CLI example"""
+    logger.info(f"in main_cli: ctx = {ctx}")
+    logger.info(f"in main_cli: global_example = {global_example}")
+    logger.info(f"in main_cli: option_one = {option_one}")
+    logger.info(f"in main_cli: option_two = {option_two}")
     ctx.obj.config = 'global config storage'
 
 

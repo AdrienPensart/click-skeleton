@@ -5,7 +5,8 @@ import platform
 import re
 import string
 import random
-from typing import DefaultDict, List, Any
+from collections import defaultdict
+from typing import List, Any
 
 logger = logging.getLogger(__name__)
 true_values = ('enabled', 'y', 'yes', 't', 'true', 'True', 'on', '1')
@@ -88,6 +89,6 @@ def random_password(size: int = 8) -> str:
     return ''.join(random.choice(alphabet) for i in range(size))
 
 
-class PrettyDefaultDict(DefaultDict[Any, Any]):
+class PrettyDefaultDict(defaultdict):  # type: ignore
     '''Beautiful (correct printing) dict using collections.defaultdict'''
     __repr__ = dict.__repr__
