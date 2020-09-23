@@ -1,8 +1,8 @@
 '''Core features include an init function for skeleton'''
 import logging
 from typing import Optional, Dict, Any, Type
-import attrdict  # type: ignore
 import click
+from box import Box  # type: ignore
 from click_help_colors import version_option  # type: ignore
 from click_skeleton.advanced_group import RootAdvancedGroup
 from click_skeleton.decorators import add_options
@@ -14,10 +14,11 @@ def sensible_context_settings(prog_name: str, version: str, **kwargs: Any) -> Di
     '''Prevents click from rewrapping help messages
     Set a global user storage for obj'''
     # obj = attrdict.AttrDict
-    obj = attrdict.AttrDefault
+    obj = Box()
     obj.prog_name = prog_name
     obj.version = version
     sensible_defaults = {
+        'auto_envvar_prefix': prog_name.upper(),
         'max_content_width': 140,
         'terminal_width': 140,
         'obj': obj,

@@ -74,7 +74,7 @@ class VersionCheckerThread(threading.Thread):
             extra_index_url = ''
             if self.domain != DEFAULT_PYPI:
                 extra_index_url = f'--extra-index-url=https://{self.domain} '
-            if semver.compare(self.current_version, last_version) < 0:
+            if semver.VersionInfo.compare(self.current_version, last_version) < 0:
                 self.new_version_warning = click.style(
                     f'''
 {self.prog_name} : new version {last_version} available (current version: {self.current_version})

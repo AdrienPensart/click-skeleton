@@ -7,7 +7,7 @@ import click
 def flatten(iterables: Union[Any, Iterable[Any]]) -> Iterable[Any]:
     '''Recursively flatten argument'''
     for element in iterables:
-        if isinstance(element, collections.Iterable) and not isinstance(element, (str, bytes)):
+        if isinstance(element, collections.abc.Iterable) and not isinstance(element, (str, bytes)):
             yield from flatten(element)
         else:
             yield element

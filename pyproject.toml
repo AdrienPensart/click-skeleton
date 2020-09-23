@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "click-skeleton"
-version = "0.7.0"
+version = "0.7.1"
 description = "Click app skeleton"
 authors = ["Adrien Pensart"]
 
@@ -17,7 +17,7 @@ colorama = "^0.4.3"
 pytest-click = "^1.0.2"
 semver = "^2.10.2"
 requests = "^2.24.0"
-attrdict = "^2.0.1"
+python-box = "^5.1.1"
 
 [tool.poetry.dev-dependencies]
 pytest-cov = "^2.10.1"
@@ -29,7 +29,7 @@ flake8 = "^3.8.3"
 
 [tool.pytest.ini_options]
 minversion = "6.0"
-addopts = "--cov-report term-missing:skip-covered --cov-report html --disable-pytest-warnings --durations=0 --cov click_skeleton -s"
+addopts = "--cov-report term-missing:skip-covered --cov-report html --durations=0 --cov click_skeleton -s"
 
 [tool.pylint.master]
 jobs = 4
