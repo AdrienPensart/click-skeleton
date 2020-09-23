@@ -89,11 +89,14 @@ upgrade command : pip3 install -U {extra_index_url}{self.prog_name}''',
 
     def print(self) -> None:
         '''Join thread and print result on stderr'''
-        if not self.is_alive():
-            logger.debug('Version checker thread may have exited')
-            return
-        self.join()
-        if self.new_version_warning:
-            click.echo(self.new_version_warning, err=True)
-        else:
-            logger.info(f'{self.prog_name} : no new version available')  # pylint: disable=logging-fstring-interpolation
+        try:
+            if not self.is_alive():
+                logger.debug('Version checker thread may have exited')
+                return
+            self.join()
+            if self.new_version_warning:
+                click.echo(self.new_version_warning, err=True)
+            else:
+                logger.info(f'{self.prog_name} : no new version available')  # pylint: disable=logging-fstring-interpolation
+        except Exception as error:  # pylint: disable=broad-except
+            logger.exception(error)
