@@ -71,10 +71,13 @@ class VersionCheckerThread(threading.Thread):
                 return
 
             last_version = last_version_matches.group(1)
-            extra_index_url = ''
-            if self.domain != DEFAULT_PYPI:
-                extra_index_url = f'--extra-index-url=https://{self.domain} '
-            if semver.VersionInfo.compare(self.current_version, last_version) < 0:
+
+            last_version_info = semver.VersionInfo.parse(last_version)
+            current_version_info = semver.VersionInfo.parse(self.current_version)
+            if current_version_info < last_version_info:
+                extra_index_url = ''
+                if self.domain != DEFAULT_PYPI:
+                    extra_index_url = f'--extra-index-url=https://{self.domain} '
                 self.new_version_warning = click.style(
                     f'''
 {self.prog_name} : new version {last_version} available (current version: {self.current_version})
@@ -82,7 +85,7 @@ upgrade command : pip3 install -U {extra_index_url}{self.prog_name}''',
                     fg='bright_blue',
                 )
         except Exception as error:  # pylint: disable=broad-except
-            logger.error(error)
+            logger.exception(error)
 
     def print(self) -> None:
         '''Join thread and print result on stderr'''
