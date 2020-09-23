@@ -4,12 +4,13 @@ trap '[ $? -eq 0 ] && exit 0 || echo "$0 FAILED"' EXIT
 
 echo "updating poetry deps..."
 poetry update
+
+echo "requirements.txt generation..."
 poetry export -f requirements.txt -o requirements.txt --without-hashes
-sed -i '/extra-index-url/d' requirements.txt
-sed -i '/^$/d' requirements.txt
+
+echo "requirements-dev.txt generation..."
 poetry export --dev -f requirements.txt -o requirements-dev.txt --without-hashes
-sed -i '/extra-index-url/d' requirements-dev.txt
-sed -i '/^$/d' requirements-dev.txt
+
 echo "setup.py generation..."
 poetry run dephell convert
 git add setup.py poetry.lock requirements.txt requirements-dev.txt
