@@ -2,11 +2,10 @@
 import logging
 from typing import Any
 import click
-from click_skeleton import add_options, skeleton, sensible_context_settings, doc
+from click_skeleton import add_options, skeleton, doc
 
 PROG_NAME = 'example-cli'
 __version__ = '1.0.0'
-CONTEXT_SETTINGS = sensible_context_settings(PROG_NAME, __version__, auto_envvar_prefix='CLI')
 logger = logging.getLogger(PROG_NAME)
 
 global_example_option = click.option('--global-example', help="A global option")
@@ -16,7 +15,11 @@ group_of_options = [
 ]
 
 
-@skeleton(context_settings=CONTEXT_SETTINGS)
+@skeleton(
+    name=PROG_NAME,
+    version=__version__,
+    auto_envvar_prefix='CLI',
+)
 @click.pass_context
 @add_options(global_example_option, group_of_options)
 def main_cli(ctx: click.Context, global_example: str, option_one: str, option_two: str) -> Any:
@@ -30,9 +33,10 @@ def main_cli(ctx: click.Context, global_example: str, option_one: str, option_tw
 
 
 @main_cli.command(short_help='Generates a README.rst', aliases=['doc'])
-def readme() -> None:
+@click.pass_context
+def readme(ctx: click.Context) -> None:
     '''Uses gen_doc click-skeleton helper to generates a complete readme'''
-    doc.gen_doc(main_cli, PROG_NAME, CONTEXT_SETTINGS)
+    doc.readme(main_cli, ctx.obj.prog_name, ctx.obj.context_settings)
 
 
 @main_cli.command(short_help='Generates an exception')

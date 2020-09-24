@@ -5,7 +5,7 @@ import click
 from . import AdvancedGroup
 
 
-def gen_doc(
+def readme(
     main_cli: click.core.Group,
     prog_name: str,
     context_settings: Dict[str, Any]

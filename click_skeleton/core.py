@@ -1,58 +1,66 @@
 '''Core features include an init function for skeleton'''
 import logging
-from typing import Optional, Dict, Any, Type
+from typing import Optional, Any
 import click
 from box import Box  # type: ignore
 from click_help_colors import version_option  # type: ignore
-from click_skeleton.advanced_group import RootAdvancedGroup
+from click_skeleton.advanced_group import AdvancedGroup
 from click_skeleton.decorators import add_options
+from click_skeleton.version import version_cmd
+from click_skeleton.completion import completion_cli
 
 logger = logging.getLogger(__name__)
 
 
-def sensible_context_settings(prog_name: str, version: str, **kwargs: Any) -> Dict[str, Any]:
-    '''Prevents click from rewrapping help messages
-    Set a global user storage for obj'''
-    # obj = attrdict.AttrDict
+def skeleton(
+    name: str,
+    version: str,
+    auto_envvar_prefix: Optional[str] = None,
+    cls: Any = None,
+    **kwargs: Any,
+) -> Any:
+    '''Generates an skeleton group with version options included'''
+    auto_envvar_prefix = auto_envvar_prefix if auto_envvar_prefix is not None else name.upper()
+    if cls is None:
+        cls = AdvancedGroup
+
+    sensible_context_settings = {
+        'auto_envvar_prefix': auto_envvar_prefix,
+        'max_content_width': 140,
+        'terminal_width': 140,
+        'help_option_names': ['-h', '--help'],
+    }
+
     obj = Box(default_box=True)
-    obj.prog_name = prog_name
+    obj.prog_name = name
     obj.version = version
-    sensible_defaults = {
-        'auto_envvar_prefix': prog_name.upper(),
+    obj.context_settings = sensible_context_settings
+
+    context_settings = {
+        'auto_envvar_prefix': auto_envvar_prefix,
         'max_content_width': 140,
         'terminal_width': 140,
         'obj': obj,
-        'help_option_names': ['-h', '--help']
+        'help_option_names': ['-h', '--help'],
     }
-    sensible_defaults.update(kwargs)
-    return sensible_defaults
 
-
-def skeleton(
-    context_settings: Optional[Dict[str, Any]] = None,
-    cls: Optional[Type[click.Group]] = None,
-) -> Any:
-    '''Generates an AdvancedGroup with version options included'''
-
-    if cls is None:
-        cls = RootAdvancedGroup
-
-    if context_settings is None:
-        click.secho('Please provide a context_settings initializes with sensible_context_settings', fg='red', err=True)
-        context_settings = sensible_context_settings(prog_name='unknown', version='unkown')
-
-    prog_name = context_settings['obj'].prog_name
-    version = context_settings['obj'].version
+    commands = {
+        'completion': completion_cli,
+        'version': version_cmd,
+    }
     return add_options(
         click.group(
+            name=name,
             context_settings=context_settings,
+            commands=commands,
             cls=cls,
+            **kwargs,
         ),
         version_option(
             version,
             "--version", "-V",
             version_color='green',
-            prog_name=prog_name,
+            prog_name=name,
             prog_name_color='yellow',
         ),
     )
