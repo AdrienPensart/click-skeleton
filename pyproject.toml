@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "click-skeleton"
-version = "0.7.5"
+version = "0.7.6"
 description = "Click app skeleton"
 authors = ["Adrien Pensart"]
 
@@ -17,7 +17,7 @@ colorama = "^0.4.3"
 pytest-click = "^1.0.2"
 semver = "^2.10.2"
 requests = "^2.24.0"
-python-box = "^5.1.1"
+munch = "^2.5.0"
 
 [tool.poetry.dev-dependencies]
 pytest-cov = "^2.10.1"

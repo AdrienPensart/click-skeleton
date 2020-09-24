@@ -278,6 +278,21 @@ optional = false
 python-versions = ">=3.5"
 
 [[package]]
+name = "munch"
+version = "2.5.0"
+description = "A dot-accessible dictionary (a la JavaScript objects)"
+category = "main"
+optional = false
+python-versions = "*"
+
+[package.dependencies]
+six = "*"
+
+[package.extras]
+testing = ["pytest", "coverage", "astroid (>=1.5.3,<1.6.0)", "pylint (>=1.7.2,<1.8.0)", "astroid (>=2.0)", "pylint (>=2.3.1,<2.4.0)"]
+yaml = ["PyYAML (>=5.1.0)"]
+
+[[package]]
 name = "mypy"
 version = "0.782"
 description = "Optional static typing for Python"
@@ -458,21 +473,6 @@ pytest = ">=4.6"
 testing = ["fields", "hunter", "process-tests (2.0.2)", "six", "pytest-xdist", "virtualenv"]
 
 [[package]]
-name = "python-box"
-version = "5.1.1"
-description = "Advanced Python dictionaries with dot notation access"
-category = "main"
-optional = false
-python-versions = ">=3.6"
-
-[package.extras]
-pyyaml = ["pyyaml"]
-all = ["ruamel.yaml", "toml", "msgpack"]
-msgpack = ["msgpack"]
-"ruamel.yaml" = ["ruamel.yaml"]
-toml = ["toml"]
-
-[[package]]
 name = "pytype"
 version = "2020.9.16"
 description = "Python type inferencer"
@@ -598,7 +598,7 @@ testing = ["pytest (>=3.5,<3.7.3 || >3.7.3)", "pytest-checkdocs (>=1.2.3)", "pyt
 [metadata]
 lock-version = "1.1"
 python-versions = ">=3.6,<3.9"
-content-hash = "6a9e92832a49becc03407a31269d96ffd7b7afd94fead4cfc6ee0f925890a4f1"
+content-hash = "4897dcec3b52a753ef142f52074eb3a2256a4a70e56bd8c2246557875e274ea1"
 
 [metadata.files]
 astroid = [
@@ -784,6 +784,10 @@ more-itertools = [
     {file = "more-itertools-8.5.0.tar.gz", hash = "sha256:6f83822ae94818eae2612063a5101a7311e68ae8002005b5e05f03fd74a86a20"},
     {file = "more_itertools-8.5.0-py3-none-any.whl", hash = "sha256:9b30f12df9393f0d28af9210ff8efe48d10c94f73e5daf886f10c4b0b0b4f03c"},
 ]
+munch = [
+    {file = "munch-2.5.0-py2.py3-none-any.whl", hash = "sha256:6f44af89a2ce4ed04ff8de41f70b226b984db10a91dcc7b9ac2efc1c77022fdd"},
+    {file = "munch-2.5.0.tar.gz", hash = "sha256:2d735f6f24d4dba3417fa448cae40c6e896ec1fdab6cdb5e6510999758a4dbd2"},
+]
 mypy = [
     {file = "mypy-0.782-cp35-cp35m-macosx_10_6_x86_64.whl", hash = "sha256:2c6cde8aa3426c1682d35190b59b71f661237d74b053822ea3d748e2c9578a7c"},
     {file = "mypy-0.782-cp35-cp35m-manylinux1_x86_64.whl", hash = "sha256:9c7a9a7ceb2871ba4bac1cf7217a7dd9ccd44c27c2950edbc6dc08530f32ad4e"},
@@ -860,10 +864,6 @@ pytest-click = [
 pytest-cov = [
     {file = "pytest-cov-2.10.1.tar.gz", hash = "sha256:47bd0ce14056fdd79f93e1713f88fad7bdcc583dcd7783da86ef2f085a0bb88e"},
     {file = "pytest_cov-2.10.1-py2.py3-none-any.whl", hash = "sha256:45ec2d5182f89a81fc3eb29e3d1ed3113b9e9a873bcddb2a71faaab066110191"},
-]
-python-box = [
-    {file = "python-box-5.1.1.tar.gz", hash = "sha256:e51d03275f0d6fef3c155f79c19e542c2fb6d92e89eb385cd71ea22c5d4681b3"},
-    {file = "python_box-5.1.1-py3-none-any.whl", hash = "sha256:b7a6f3edd2f71e2475d93163b6465f637a2714b155acafef17408b06e55282b3"},
 ]
 pytype = [
     {file = "pytype-2020.9.16-cp35-cp35m-macosx_10_14_x86_64.whl", hash = "sha256:fc4d926455698d095e15dc7788de1689d1c75ed58d21f24769b25349e45a8c5c"},

@@ -2,7 +2,7 @@
 import logging
 from typing import Dict, Optional, Any
 import click
-from box import Box  # type: ignore
+from munch import Munch, DefaultFactoryMunch  # type: ignore
 from click_help_colors import version_option  # type: ignore
 from click_skeleton.advanced_group import AdvancedGroup
 from click_skeleton.decorators import add_options
@@ -34,7 +34,7 @@ def skeleton(
     sensible_context_settings = DEFAULT_CONTEXT_SETTINGS
     sensible_context_settings['auto_envvar_prefix'] = auto_envvar_prefix
 
-    obj = Box(default_box=True)
+    obj = DefaultFactoryMunch(Munch)
     obj.prog_name = name
     obj.version = version
     obj.context_settings = sensible_context_settings
