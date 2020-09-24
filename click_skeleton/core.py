@@ -14,7 +14,7 @@ def sensible_context_settings(prog_name: str, version: str, **kwargs: Any) -> Di
     '''Prevents click from rewrapping help messages
     Set a global user storage for obj'''
     # obj = attrdict.AttrDict
-    obj = Box()
+    obj = Box(default_box=True)
     obj.prog_name = prog_name
     obj.version = version
     sensible_defaults = {
@@ -44,15 +44,15 @@ def skeleton(
     prog_name = context_settings['obj'].prog_name
     version = context_settings['obj'].version
     return add_options(
+        click.group(
+            context_settings=context_settings,
+            cls=cls,
+        ),
         version_option(
             version,
             "--version", "-V",
             version_color='green',
             prog_name=prog_name,
             prog_name_color='yellow',
-        ),
-        click.group(
-            context_settings=context_settings,
-            cls=cls,
         ),
     )

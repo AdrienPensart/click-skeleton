@@ -25,6 +25,7 @@ def main_cli(ctx: click.Context, global_example: str, option_one: str, option_tw
     logger.info(f"in main_cli: global_example = {global_example}")
     logger.info(f"in main_cli: option_one = {option_one}")
     logger.info(f"in main_cli: option_two = {option_two}")
+    ctx.obj.global_option = global_example
     ctx.obj.config = 'global config storage'
 
 
@@ -35,6 +36,9 @@ def readme() -> None:
 
 
 @main_cli.command(short_help='Generates an exception')
-def abort() -> None:
+@click.pass_context
+def abort(ctx: click.Context) -> None:
     '''Generates an exception on purpose (test)'''
+    print(f'Global option = {ctx.obj.global_option}')
+    print(f'One storage = {ctx.obj.config}')
     raise Exception('throw for test purposes')

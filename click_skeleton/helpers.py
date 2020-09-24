@@ -79,7 +79,10 @@ def raise_limits() -> bool:
         resource.setrlimit(resource.RLIMIT_NOFILE, (hard, hard))
         return True
     except (ValueError, OSError) as error:
-        logger.critical(f'You may need to check ulimit parameter: {error}')
+        if 'macOS' in platform.platform():
+            logger.info(f"Cannot raise system limits for current user on : {platform.platform()}")
+        else:
+            logger.critical(f'You may need to check ulimit parameter: {error}')
         return False
 
 
