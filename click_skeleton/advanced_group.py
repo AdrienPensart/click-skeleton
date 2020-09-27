@@ -13,7 +13,7 @@ from click_skeleton.exceptions import AlreadyRegistered
 logger = logging.getLogger(__name__)
 
 
-class AdvancedGroup(ClickAliasedGroup, DYMGroup, HelpColorsGroup):  # type: ignore
+class AdvancedGroup(ClickAliasedGroup, DYMGroup, HelpColorsGroup):
     '''Special click group with default plugins enabled :
     - did-you-mean
     - click aliases for commands

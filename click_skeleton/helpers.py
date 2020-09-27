@@ -57,13 +57,7 @@ def strip_colors(text: str) -> str:
 
 def mysplit(text: str, delimiter: str = ',') -> List[str]:
     '''Split a string without returning empty list if string is empty'''
-    if isinstance(text, list):
-        return text
-    if text is None:
-        return []
-    if isinstance(text, str):
-        return [x for x in text.split(delimiter) if x]
-    raise ValueError(text)
+    return [x for x in text.split(delimiter) if x]
 
 
 def raise_limits() -> bool:
@@ -92,6 +86,6 @@ def random_password(size: int = 8) -> str:
     return ''.join(random.choice(alphabet) for i in range(size))
 
 
-class PrettyDefaultDict(defaultdict):  # type: ignore
+class PrettyDefaultDict(defaultdict):
     '''Beautiful (correct printing) dict using collections.defaultdict'''
     __repr__ = dict.__repr__
