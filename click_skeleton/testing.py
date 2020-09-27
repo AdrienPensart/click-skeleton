@@ -9,14 +9,13 @@ from click_skeleton import helpers
 logger = logging.getLogger(__name__)
 
 
-def run_cli(cli_runner: testing.CliRunner, called_cli: click.core.Group, *args: Any, catch_exceptions: bool = False, **kwargs: Any) -> str:
+def run_cli(cli_runner: testing.CliRunner, called_cli: click.core.Group, *args: Any, **kwargs: Any) -> str:
     '''Helper to run the CLI for pytest-click unit tests'''
     result: testing.Result = cli_runner.invoke(
         called_cli,
         *args,
-        catch_exceptions=catch_exceptions,
         **kwargs,
-    )  # type: ignore
+    )
     logger.debug(result.output)
     if result.exception:
         exc_info = result.exc_info
