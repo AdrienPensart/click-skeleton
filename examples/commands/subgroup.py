@@ -1,9 +1,9 @@
 '''A subgroup example'''
+import click
 from click_skeleton import AdvancedGroup
-from examples.cli import main_cli
 
 
-@main_cli.group('subgroup', short_help='A sub group', cls=AdvancedGroup, aliases=['subgroup_alias'])
+@click.group('subgroup', short_help='A sub group', cls=AdvancedGroup, aliases=['subgroup_alias'])
 def subgroup() -> None:
     '''I am a subgroup!'''
     print('hello from subgroup!')

@@ -1,25 +1,32 @@
 '''Advanced group is a colored, what-did-you-mean with aliases commands group'''
 import logging
+import pkgutil
+import sys
+import importlib
 from typing import Any, Optional, Sequence
 import click
 from click_help_colors import HelpColorsGroup  # type: ignore
 from click_didyoumean import DYMGroup  # type: ignore
 from click_aliases import ClickAliasedGroup  # type: ignore
+from click_skeleton.exceptions import AlreadyRegistered
 
 logger = logging.getLogger(__name__)
 
 
-class AdvancedGroup(DYMGroup, ClickAliasedGroup, HelpColorsGroup):  # type: ignore
+class AdvancedGroup(ClickAliasedGroup, DYMGroup, HelpColorsGroup):  # type: ignore
     '''Special click group with default plugins enabled :
     - did-you-mean
     - click aliases for commands
     - colored help message
     - auto help command
     '''
-    def __init__(self, *args: Any, **kwargs: Any):
+    def __init__(self, *args: Any, aliases=None, **kwargs: Any):
         kwargs['help_headers_color'] = 'yellow'
         kwargs['help_options_color'] = 'green'
+        # super(AdvancedGroup, self).__init__(*args, aliases=aliases, **kwargs)
         super().__init__(*args, **kwargs)
+        # print(f"{self} : {args} | {kwargs}")
+        self.aliases = aliases if aliases is not None else []
 
         @click.command('help')
         @click.argument('command', nargs=-1)
@@ -37,4 +44,38 @@ class AdvancedGroup(DYMGroup, ClickAliasedGroup, HelpColorsGroup):  # type: igno
                 if not ctx.parent:
                     raise RuntimeError('no click context parent available')
                 print(ctx.parent.get_help())
+
         self.add_command(_help, 'help')
+
+    def add_group(self, cmd, name=None):
+        """Registers another :class:`Group` with this group.  If the name
+        is not provided, the name of the group is used.
+        """
+        self.add_command(cmd, name)
+
+        if not cmd.aliases:
+            return
+
+        if cmd.name in self._commands:
+            raise AlreadyRegistered(f'{cmd.name} group is already registered')
+
+        self._commands[cmd.name] = cmd.aliases
+        for alias in cmd.aliases:
+            if alias in self._aliases:
+                raise AlreadyRegistered(f'Alias {alias} is already used by {self._aliases[alias]}')
+            self._aliases[alias] = cmd.name
+
+    def add_groups_from_package(self, package):
+        '''loads commands dynamically, not supported by pyinstaller'''
+        package_name = package.__name__
+        package = sys.modules[package_name]
+        modules_by_name = {
+            name: importlib.import_module(package_name + '.' + name)
+            for loader, name, is_pkg in pkgutil.walk_packages(package.__path__)
+        }
+        for module_name, module in modules_by_name.items():
+            try:
+                cli = getattr(module, 'cli')
+                self.add_group(cli)
+            except AttributeError:
+                click.secho(f'''Command module {module_name} does not contain a 'cli' definition''', fg='red', err=True)

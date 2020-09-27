@@ -3,6 +3,7 @@ import logging
 from typing import Any
 import click
 from click_skeleton import add_options, skeleton, doc
+import examples.commands
 
 PROG_NAME = 'example-cli'
 __version__ = '1.0.0'
@@ -46,3 +47,6 @@ def abort(ctx: click.Context) -> None:
     print(f'Global option = {ctx.obj.global_option}')
     print(f'One storage = {ctx.obj.config}')
     raise Exception('throw for test purposes')
+
+
+main_cli.add_groups_from_package(examples.commands)
