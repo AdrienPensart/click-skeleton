@@ -47,7 +47,7 @@ class AdvancedGroup(ClickAliasedGroup, DYMGroup, HelpColorsGroup):
 
         self.add_command(_help, 'help')
 
-    def add_group(self, cmd, name=None):
+    def add_group(self, cmd, name):
         """Registers another :class:`Group` with this group.  If the name
         is not provided, the name of the group is used.
         """
@@ -56,14 +56,14 @@ class AdvancedGroup(ClickAliasedGroup, DYMGroup, HelpColorsGroup):
         if not cmd.aliases:
             return
 
-        if cmd.name in self._commands:
-            raise AlreadyRegistered(f'{cmd.name} group is already registered')
+        if name in self._commands:
+            raise AlreadyRegistered(f'{name} group is already registered')
 
-        self._commands[cmd.name] = cmd.aliases
+        self._commands[name] = cmd.aliases
         for alias in cmd.aliases:
             if alias in self._aliases:
                 raise AlreadyRegistered(f'Alias {alias} is already used by {self._aliases[alias]}')
-            self._aliases[alias] = cmd.name
+            self._aliases[alias] = name
 
     def add_groups_from_package(self, package):
         '''loads commands dynamically, not supported by pyinstaller'''
@@ -76,6 +76,9 @@ class AdvancedGroup(ClickAliasedGroup, DYMGroup, HelpColorsGroup):
         for module_name, module in modules_by_name.items():
             try:
                 cli = getattr(module, 'cli')
-                self.add_group(cli)
+                if cli.name != 'cli':
+                    self.add_group(cli, cli.name)
+                else:
+                    self.add_group(cli, module_name)
             except AttributeError:
                 click.secho(f'''Command module {module_name} does not contain a 'cli' definition''', fg='red', err=True)
