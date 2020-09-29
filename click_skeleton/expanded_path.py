@@ -74,6 +74,7 @@ class ExpandedPath(click.ParamType):
                 self.fail(f"{self.path_type} {value} is not writable.", param, ctx)
 
         if self.readable and not os.access(value, os.R_OK):
+            pdir = os.path.dirname(value)
             if not pdir:
                 pdir = '.'
             if not os.access(pdir, os.R_OK):
