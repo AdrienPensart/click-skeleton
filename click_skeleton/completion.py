@@ -34,9 +34,7 @@ def completion_cli() -> None:
 
 
 @completion_cli.command(short_help='Show the click-completion-command completion code', aliases=['print', 'generate'])
-@add_options(
-    completion_options,
-)
+@add_options(completion_options)  # type: ignore
 def show(shell: str, case_insensitive: bool) -> None:
     '''Generate shell code to enable completion'''
     extra_env = {'_CLICK_COMPLETION_COMMAND_CASE_INSENSITIVE_COMPLETE': 'ON'} if case_insensitive else {}
@@ -44,10 +42,7 @@ def show(shell: str, case_insensitive: bool) -> None:
 
 
 @completion_cli.command(short_help='Install the click-completion-command completion')
-@add_options(
-    completion_options,
-    append_option,
-)
+@add_options(completion_options, append_option)  # type: ignore
 @click.argument('path', required=False)
 def install(append: bool, case_insensitive: bool, shell: str, path: Optional[str]) -> None:
     '''Auto install shell completion code in your rc file'''

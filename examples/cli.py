@@ -16,13 +16,9 @@ group_of_options = [
 ]
 
 
-@skeleton(
-    name=PROG_NAME,
-    version=__version__,
-    auto_envvar_prefix='CLI',
-)
+@skeleton(name=PROG_NAME, version=__version__, auto_envvar_prefix='CLI')  # type: ignore
 @click.pass_context
-@add_options(global_example_option, group_of_options)
+@add_options(global_example_option, group_of_options)  # type: ignore
 def main_cli(ctx: click.Context, global_example: str, option_one: str, option_two: str) -> Any:
     """Simple CLI example"""
     logger.info(f"in main_cli: ctx = {ctx}")
@@ -33,14 +29,14 @@ def main_cli(ctx: click.Context, global_example: str, option_one: str, option_tw
     ctx.obj.config = 'global config storage'
 
 
-@main_cli.command(short_help='Generates a README.rst', aliases=['doc'])
+@main_cli.command(short_help='Generates a README.rst', aliases=['doc'])  # type: ignore
 @click.pass_context
 def readme(ctx: click.Context) -> None:
     '''Uses gen_doc click-skeleton helper to generates a complete readme'''
     doc.readme(main_cli, ctx.obj.prog_name, ctx.obj.context_settings)
 
 
-@main_cli.command(short_help='Generates an exception')
+@main_cli.command(short_help='Generates an exception')  # type: ignore
 @click.pass_context
 def abort(ctx: click.Context) -> None:
     '''Generates an exception on purpose (test)'''

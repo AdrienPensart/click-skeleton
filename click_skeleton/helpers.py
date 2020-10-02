@@ -86,6 +86,6 @@ def random_password(size: int = 8) -> str:
     return ''.join(random.choice(alphabet) for i in range(size))
 
 
-class PrettyDefaultDict(defaultdict):
+class PrettyDefaultDict(defaultdict):  # type: ignore
     '''Beautiful (correct printing) dict using collections.defaultdict'''
     __repr__ = dict.__repr__

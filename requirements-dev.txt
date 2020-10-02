@@ -18,7 +18,7 @@ idna==2.10
 importlab==0.5.1
 importlib-metadata==2.0.0
 iniconfig==1.0.1
-isort==5.5.3
+isort==5.5.4
 jinja2==2.11.2
 lazy-object-proxy==1.4.3
 markupsafe==1.1.1
@@ -38,7 +38,7 @@ pyparsing==2.4.7
 pytest==6.1.0
 pytest-click==1.0.2
 pytest-cov==2.10.1
-pytype==2020.9.24
+pytype==2020.9.29
 pyyaml==5.3.1
 requests==2.24.0
 semver==2.10.2
