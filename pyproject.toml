@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "click-skeleton"
-version = "0.8.2"
+version = "0.8.3"
 description = "Click app skeleton"
 authors = ["Adrien Pensart"]
 
@@ -26,6 +26,7 @@ mypy = "^0.782"
 pytype = "^2020.9.16"
 coverage-badge = "^1.0.1"
 flake8 = "^3.8.3"
+dephell = "^0.8.3"
 
 [tool.pytest.ini_options]
 minversion = "6.0"
