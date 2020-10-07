@@ -10,7 +10,7 @@ from typing import List, Any
 
 logger = logging.getLogger(__name__)
 true_values = ('enabled', 'y', 'yes', 't', 'true', 'True', 'on', '1')
-false_values = ('', None, 'disabled', 'n', 'no', 'f', 'false', 'False', 'off', '0')
+false_values = ('', 'none', 'disabled', 'n', 'no', 'f', 'false', 'False', 'off', '0')
 
 
 def recursive_str(data: Any) -> Any:
