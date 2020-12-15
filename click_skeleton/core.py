@@ -1,9 +1,10 @@
 '''Core features include an init function for skeleton'''
+import re
 import logging
 from typing import Dict, Optional, Any
 import click
 from munch import Munch, DefaultFactoryMunch  # type: ignore
-from click_help_colors import version_option  # type: ignore
+from click_help_colors.utils import _colorize  # type: ignore
 from click_skeleton.advanced_group import AdvancedGroup
 from click_skeleton.decorators import add_options
 from click_skeleton.version import version_cmd
@@ -16,6 +17,35 @@ DEFAULT_CONTEXT_SETTINGS = {
     'terminal_width': 140,
     'help_option_names': ['-h', '--help'],
 }
+
+
+def version_option(
+        version: Optional[str] = None,
+        prog_name: Optional[str] = None,
+        message: str = "%(prog)s, version %(version)s",
+        message_color: Optional[str] = None,
+        prog_name_color: Optional[str] = None,
+        version_color: Optional[str] = None,
+        **kwargs: Any,
+) -> Any:
+    '''Re-implement version handling with --version and -V shortcut'''
+    msg_parts = []
+    for placeholder in re.split(r'(%\(version\)s|%\(prog\)s)', message):
+        if placeholder == '%(prog)s':
+            msg_parts.append(_colorize(prog_name, prog_name_color or message_color))
+        elif placeholder == '%(version)s':
+            msg_parts.append(_colorize(version, version_color or message_color))
+        else:
+            msg_parts.append(_colorize(placeholder, message_color))
+    message = ''.join(msg_parts)
+
+    return click.version_option(
+        version,
+        '--version', '-V',
+        prog_name=prog_name,
+        message=message,
+        **kwargs
+    )
 
 
 def skeleton(
@@ -48,10 +78,9 @@ def skeleton(
     commands['version'] = version_cmd
     return add_options(
         version_option(
-            version,
-            "--version", "-V",
-            version_color='green',
+            version=version,
             prog_name=name,
+            version_color='green',
             prog_name_color='yellow',
         ),
         click.group(
