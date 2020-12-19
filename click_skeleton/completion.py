@@ -9,7 +9,7 @@ from click_skeleton.decorators import add_options
 
 completion_options = [
     click.option(
-        '-i', '--case-insensitive/--no-case-insensitive',
+        '-i', '--case-insensitive',
         help="Case insensitive completion",
         is_flag=True,
     ),

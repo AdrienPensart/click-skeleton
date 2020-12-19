@@ -35,9 +35,15 @@ def test_cli_help(cli_runner: Any) -> None:
 
 
 @pytest.mark.runner_setup(mix_stderr=False)
-def test_readme(cli_runner: Any) -> None:
-    '''Test readme generation'''
-    run_cli(cli_runner, main_cli, ["readme"])
+def test_readme_rst(cli_runner: Any) -> None:
+    '''Test readme generation in restructuredText'''
+    run_cli(cli_runner, main_cli, ["readme", '--output', 'rst'])
+
+
+@pytest.mark.runner_setup(mix_stderr=False)
+def test_readme_markdown(cli_runner: Any) -> None:
+    '''Test readme generation in Markdown'''
+    run_cli(cli_runner, main_cli, ["readme", '--output', 'markdown'])
 
 
 @pytest.mark.runner_setup(mix_stderr=False)

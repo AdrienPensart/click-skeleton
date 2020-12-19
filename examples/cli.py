@@ -31,9 +31,10 @@ def main_cli(ctx: click.Context, global_example: str, option_one: str, option_tw
 
 @main_cli.command(short_help='Generates a README.rst', aliases=['doc'])  # type: ignore
 @click.pass_context
-def readme(ctx: click.Context) -> None:
+@click.option('--output', help='README output format', type=click.Choice(['rst', 'markdown']), default='rst', show_default=True)
+def readme(ctx: click.Context, output: str) -> None:
     '''Uses gen_doc click-skeleton helper to generates a complete readme'''
-    doc.readme(main_cli, ctx.obj.prog_name, ctx.obj.context_settings)
+    doc.readme(main_cli, ctx.obj.prog_name, ctx.obj.context_settings, output)
 
 
 @main_cli.command(short_help='Generates an exception')  # type: ignore
