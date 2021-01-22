@@ -13,12 +13,14 @@ click-skeleton
 Description
 -----------
 Library to build a CLI with a well defined skeleton and helpers, including :
-* completion
-* help and version colors
-* readme generation
-* -V / --version / version subcommand
-* -h / --help / help subcommand
-* subgroup creation and registering made easier
+
+- completion
+- real --help eagerness
+- help and version colors
+- readme generation
+- -V / --version / version subcommand
+- -h / --help / help subcommand
+- subgroup creation and registering made easier
 
 EXAMPLE CLI
 -----------

@@ -24,9 +24,7 @@ class AdvancedGroup(ClickAliasedGroup, DYMGroup, HelpColorsGroup):  # type: igno
     def __init__(self, *args: Any, aliases: Optional[str] = None, **kwargs: Any):
         kwargs['help_headers_color'] = 'yellow'
         kwargs['help_options_color'] = 'green'
-        # super(AdvancedGroup, self).__init__(*args, aliases=aliases, **kwargs)
         super().__init__(*args, **kwargs)
-        # print(f"{self} : {args} | {kwargs}")
         self.aliases = aliases if aliases is not None else []
 
         @click.command('help')
@@ -40,13 +38,19 @@ class AdvancedGroup(ClickAliasedGroup, DYMGroup, HelpColorsGroup):  # type: igno
             if command:
                 first_command = command[0]
                 command_obj = self.get_command(ctx, first_command)
-                print(command_obj.get_help(ctx))
+                click.echo(command_obj.get_help(ctx))
             else:
                 if not ctx.parent:
                     raise RuntimeError('no click context parent available')
-                print(ctx.parent.get_help())
+                click.echo(ctx.parent.get_help())
 
         self.add_command(_help, 'help')
+
+    def parse_args(self, ctx: click.Context, args: Any) -> Any:
+        if any([help_option_name in args for help_option_name in ctx.help_option_names]):
+            click.echo(ctx.get_help(), color=ctx.color)
+            ctx.exit()
+        return super().parse_args(ctx, args)
 
     def add_group(self, cmd: "AdvancedGroup", name: str) -> None:
         """Registers another :class:`Group` with this group.  If the name
