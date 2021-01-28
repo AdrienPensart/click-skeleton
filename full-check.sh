@@ -30,12 +30,15 @@ poetry run mypy --strict click_skeleton examples tests
 poetry run pytest
 poetry run coverage-badge -f -o doc/coverage.svg
 
+echo "doc generation (rst)..."
 echo "rst-linting pass 1..."
 poetry run rst-lint doc/help.rst
-echo "doc generation..."
 \cp doc/help.rst README.rst
 poetry run examples/main.py readme >> README.rst
 echo "rst-linting pass 2..."
 poetry run rst-lint README.rst
+
+echo "doc generation (markdown)..."
+poetry run examples/main.py readme --output markdown > README.md
 
 exit 0

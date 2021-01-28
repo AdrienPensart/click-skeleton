@@ -35,6 +35,15 @@ def test_cli_help(cli_runner: Any) -> None:
 
 
 @pytest.mark.runner_setup(mix_stderr=False)
+def test_cli_subcommand_help(cli_runner: Any) -> None:
+    '''Test that CLI subcommand help string is the same using all methods'''
+    output1 = strip_colors(run_cli(cli_runner, main_cli, ['subgroup', '-h']))
+    output2 = strip_colors(run_cli(cli_runner, main_cli, ['subgroup', '--help']))
+    output3 = strip_colors(run_cli(cli_runner, main_cli, ['subgroup', 'help']))
+    assert output1 == output2 == output3
+
+
+@pytest.mark.runner_setup(mix_stderr=False)
 def test_readme_rst(cli_runner: Any) -> None:
     '''Test readme generation in restructuredText'''
     run_cli(cli_runner, main_cli, ["readme", '--output', 'rst'])

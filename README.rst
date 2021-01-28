@@ -105,7 +105,7 @@ example-cli help
 ****************
 .. code-block::
 
-  Usage: example-cli help [OPTIONS] [COMMAND]...
+  Usage: example-cli help [OPTIONS]
 
     Print help
 
