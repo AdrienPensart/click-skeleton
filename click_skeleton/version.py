@@ -7,4 +7,4 @@ from click_help_colors import HelpColorsCommand  # type: ignore
 @click.pass_context
 def version_cmd(ctx: click.Context) -> None:
     '''Print version, equivalent to -V and --version'''
-    click.echo(f"{click.style(ctx.obj.prog_name, fg='yellow')}, version {click.style(ctx.obj.version, fg='green')}")
+    click.echo(f"{click.style(ctx.obj.prog_name, fg='yellow')}, version {click.style(ctx.obj.version, fg='green')}", color=ctx.color)
