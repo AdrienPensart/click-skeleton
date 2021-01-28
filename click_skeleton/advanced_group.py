@@ -4,7 +4,7 @@ import pkgutil
 import sys
 import importlib
 from types import ModuleType
-from typing import Any, Optional, Sequence
+from typing import Any, Optional
 import click
 from click_help_colors import HelpColorsGroup  # type: ignore
 from click_didyoumean import DYMGroup  # type: ignore
@@ -28,29 +28,18 @@ class AdvancedGroup(ClickAliasedGroup, DYMGroup, HelpColorsGroup):  # type: igno
         self.aliases = aliases if aliases is not None else []
 
         @click.command('help')
-        @click.argument('command', nargs=-1)
         @click.pass_context
-        def _help(ctx: Optional[click.Context], command: Sequence[click.Command]) -> None:
+        def _help(ctx: Optional[click.Context]) -> None:
             '''Print help'''
             # we accept many commands, but only show help of the first one
             if not ctx:
                 raise RuntimeError('no click context available')
-            if command:
-                first_command = command[0]
-                command_obj = self.get_command(ctx, first_command)
-                click.echo(command_obj.get_help(ctx))
-            else:
-                if not ctx.parent:
-                    raise RuntimeError('no click context parent available')
-                click.echo(ctx.parent.get_help())
+            if not ctx.parent:
+                raise RuntimeError('no click context parent available')
+            click.echo(ctx.parent.get_help(), color=ctx.color)
+            ctx.exit()
 
         self.add_command(_help, 'help')
-
-    def parse_args(self, ctx: click.Context, args: Any) -> Any:
-        if any([help_option_name in args for help_option_name in ctx.help_option_names]):
-            click.echo(ctx.get_help(), color=ctx.color)
-            ctx.exit()
-        return super().parse_args(ctx, args)
 
     def add_group(self, cmd: "AdvancedGroup", name: str) -> None:
         """Registers another :class:`Group` with this group.  If the name

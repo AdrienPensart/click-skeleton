@@ -6,7 +6,6 @@ from click_skeleton import AdvancedGroup
 @click.group(short_help='A sub group', cls=AdvancedGroup, aliases=['subgroup_alias'])
 def cli() -> None:
     '''I am a subgroup!'''
-    print('hello from subgroup!')
 
 
 @cli.command(short_help='A sub command')
