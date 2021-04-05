@@ -23,9 +23,8 @@ poetry run flake8 click_skeleton examples tests
 echo "static type checking : mypy..."
 poetry run mypy --strict click_skeleton examples tests
 
-# re-enable this when pytype supports python 3.9 : https://github.com/google/pytype/issues/749
-# echo "static type checking : pytype..."
-# poetry run pytype click_skeleton examples tests -j auto -k
+echo "static type checking : pytype..."
+poetry run pytype click_skeleton examples tests -j auto -k
 
 poetry run pytest
 poetry run coverage-badge -f -o doc/coverage.svg

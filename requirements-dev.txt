@@ -9,11 +9,12 @@ coverage-badge==1.*,>=1.0.1
 dephell==0.*,>=0.8.3
 flake8==3.*,>=3.8.3
 munch==2.*,>=2.5.0
-mypy==0.*,>=0.800.0
+mypy==0.*,>=0.812.0
 pylint==2.*,>=2.6.0
 pytest==6.*,>=6.0.1
 pytest-click==1.*,>=1.0.2
 pytest-cov==2.*,>=2.10.1
+pytype==2021.*,>=2021.4.1
 requests==2.*,>=2.24.0
 restructuredtext-lint==1.*,>=1.3.2
 semver==2.*,>=2.10.2
