@@ -75,13 +75,17 @@ class VersionCheckerThread(threading.Thread):
             last_version_info = semver.VersionInfo.parse(last_version)
             current_version_info = semver.VersionInfo.parse(self.current_version)
             if current_version_info < last_version_info:
-                extra_index_url = ''
+                pip_extra_index_url = ''
+                pipx_extra_index_url = ''
                 if self.domain != DEFAULT_PYPI:
-                    extra_index_url = f'--extra-index-url=https://{self.domain} '
+                    pip_extra_index_url = f'--extra-index-url=https://{self.domain} '
+                    pipx_extra_index_url = f'--index-url=https://{self.domain} '
                 self.new_version_warning = click.style(
                     f'''
 {self.prog_name} : new version {last_version} available (current version: {self.current_version})
-upgrade command : pip3 install -U {extra_index_url}{self.prog_name}''',
+upgrade command :
+    pip3 install -U {pip_extra_index_url}{self.prog_name}
+    pipx upgrade {pipx_extra_index_url}{self.prog_name}''',
                     fg='bright_blue',
                 )
         except Exception as error:  # pylint: disable=broad-except

@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "click-skeleton"
-version = "0.12"
+version = "0.13"
 description = "Click app skeleton"
 authors = ["Adrien Pensart"]
 
