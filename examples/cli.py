@@ -10,15 +10,16 @@ __version__ = '1.0.0'
 logger = logging.getLogger(PROG_NAME)
 
 global_example_option = click.option('--global-example', help="A global option")
-group_of_options = [
+group_of_options = add_options(
     click.option('--option-one', help="First option"),
     click.option('--option-two', help="Second option"),
-]
+)
 
 
-@skeleton(name=PROG_NAME, version=__version__, auto_envvar_prefix='CLI')  # type: ignore
+@skeleton(name=PROG_NAME, version=__version__, auto_envvar_prefix='CLI')
 @click.pass_context
-@add_options(global_example_option, group_of_options)  # type: ignore
+@global_example_option
+@group_of_options
 def main_cli(ctx: click.Context, global_example: str, option_one: str, option_two: str) -> Any:
     """Simple CLI example"""
     logger.info(f"in main_cli: ctx = {ctx}")
@@ -29,7 +30,7 @@ def main_cli(ctx: click.Context, global_example: str, option_one: str, option_tw
     ctx.obj.config = 'global config storage'
 
 
-@main_cli.command(short_help='Generates a README.rst', aliases=['doc'])  # type: ignore
+@main_cli.command(short_help='Generates a README.rst', aliases=['doc'])
 @click.pass_context
 @click.option('--output', help='README output format', type=click.Choice(['rst', 'markdown']), default='rst', show_default=True)
 def readme(ctx: click.Context, output: str) -> None:
@@ -37,7 +38,7 @@ def readme(ctx: click.Context, output: str) -> None:
     doc.readme(main_cli, ctx.obj.prog_name, ctx.obj.context_settings, output)
 
 
-@main_cli.command(short_help='Generates an exception')  # type: ignore
+@main_cli.command(short_help='Generates an exception')
 @click.pass_context
 def abort(ctx: click.Context) -> None:
     '''Generates an exception on purpose (test)'''

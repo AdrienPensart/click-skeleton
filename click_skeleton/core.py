@@ -9,14 +9,9 @@ from click_skeleton.advanced_group import AdvancedGroup
 from click_skeleton.decorators import add_options
 from click_skeleton.version import version_cmd
 from click_skeleton.completion import completion_cli
+from click_skeleton.defaults import DEFAULT_CONTEXT_SETTINGS
 
 logger = logging.getLogger(__name__)
-
-DEFAULT_CONTEXT_SETTINGS = {
-    'max_content_width': 140,
-    'terminal_width': 140,
-    'help_option_names': ['-h', '--help'],
-}
 
 
 def version_option(
