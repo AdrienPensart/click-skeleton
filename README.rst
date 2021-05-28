@@ -46,7 +46,7 @@ Commands
     completion                 Shell completion
     help                       Print help
     readme (doc)               Generates a README.rst
-    subgroup (subgroup_alias)  A sub group
+    subgroup (subgroup-alias)  A sub group
     version                    Print version
 
 example-cli abort
