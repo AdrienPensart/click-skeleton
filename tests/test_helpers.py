@@ -19,7 +19,7 @@ def test_password() -> None:
 
 def test_raise_limits() -> None:
     '''Important helper as we may need a lot of file handles, does not work on Mac OS X'''
-    if 'macOS' in platform.platform() or platform.system() == 'Windows':
+    if 'Darwin' in platform.platform() or platform.system() == 'Windows':
         assert raise_limits() is False
     else:
         assert raise_limits() is True

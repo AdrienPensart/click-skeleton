@@ -17,6 +17,7 @@ semver = "^2.10.2"
 requests = "^2.24.0"
 munch = "^2.5.0"
 click-help-colors = "^0.9"
+types-requests = "^2.25.0"
 
 [tool.poetry.dev-dependencies]
 pytest-cov = "^2.10.1"
@@ -24,9 +25,9 @@ pylint = "^2.6.0"
 coverage-badge = "^1.0.1"
 flake8 = "^3.8.3"
 restructuredtext-lint = "^1.3.2"
-mypy = "^0.812"
 pytype = "^2021.4.1"
 poetry2setup = "^1.0.0"
+mypy = "^0.910"
 
 [tool.pytest.ini_options]
 minversion = "6.0"

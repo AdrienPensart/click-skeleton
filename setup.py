@@ -18,7 +18,8 @@ install_requires = \
  'pytest-click>=1.0.2,<2.0.0',
  'pytest>=6.0.1,<7.0.0',
  'requests>=2.24.0,<3.0.0',
- 'semver>=2.10.2,<3.0.0']
+ 'semver>=2.10.2,<3.0.0',
+ 'types-requests>=2.25.0,<3.0.0']
 
 setup_kwargs = {
     'name': 'click-skeleton',
