@@ -10,6 +10,3 @@ poetry run flake8 click_skeleton examples tests
 
 echo "static type checking : mypy..."
 poetry run mypy click_skeleton examples tests
-
-echo "static type checking : pytype..."
-poetry run pytype click_skeleton examples tests -j auto -k
