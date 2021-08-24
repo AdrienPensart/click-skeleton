@@ -2,28 +2,12 @@
 import os
 import sys
 import traceback
-from typing import Any, Dict, Union, List, Tuple, Optional
+from typing import Any, Union, List, Tuple, Optional
 from types import TracebackType
-from colorama import Fore, Style  # type: ignore
+import click
 
 
 TRACEBACK_IDENTIFIER = 'Traceback (most recent call last):\n'
-STYLES = {
-    'backtrace': Fore.YELLOW + '{0}',
-    'error': Fore.RED + Style.BRIGHT + '{0}',
-    'line': Fore.RED + Style.BRIGHT + '{0}',
-    'module': '{0}',
-    'context': Style.BRIGHT + Fore.GREEN + '{0}',
-    'call': Fore.YELLOW + '--> ' + Style.BRIGHT + '{0}',
-}
-CONVERVATIVE_STYLES = {
-    'backtrace': Fore.YELLOW + '{0}',
-    'error': Fore.RED + Style.BRIGHT + '{0}',
-    'line': 'line ' + Fore.RED + Style.BRIGHT + '{0},',
-    'module': 'File {0},',
-    'context': 'in ' + Style.BRIGHT + Fore.GREEN + '{0}',
-    'call': Fore.YELLOW + '--> ' + Style.BRIGHT + '{0}',
-}
 
 
 def _flush(message: str) -> None:
@@ -34,21 +18,19 @@ def _flush(message: str) -> None:
 
 class _Hook:
     '''Stacktrace hook'''
-    def __init__(self,
-                 entries: Any,
-                 align: bool = False,
-                 strip_path: bool = False,
-                 conservative: bool = False):
+    def __init__(
+            self,
+            entries: Any,
+            strip_path: bool = False,
+    ):
         self.entries = entries
-        self.align = align
         self.strip = strip_path
-        self.conservative = conservative
 
     def reverse(self) -> None:
         '''Reverse stacktrace entries to ease reading'''
         self.entries = self.entries[::-1]
 
-    def rebuild_entry(self, entry: Any, styles: Dict[str, str]) -> Any:
+    def rebuild_entry(self, entry: Any) -> Any:
         '''Rebuild context of entry'''
         entry = list(entry)
         # This is the file path.
@@ -57,13 +39,11 @@ class _Hook:
         entry[1] = str(entry[1])
 
         new_entry = [
-            styles['line'].format(entry[1]) + Style.RESET_ALL,
-            styles['module'].format(entry[0]) + Style.RESET_ALL,
-            styles['context'].format(entry[2]) + Style.RESET_ALL,
-            styles['call'].format(entry[3]) + Style.RESET_ALL
+            click.style(f"{entry[1]}", fg="bright_red"),
+            entry[0],
+            click.style(f"{entry[2]}", fg="bright_green"),
+            click.style(f"--> {entry[3]}", fg="bright_yellow"),
         ]
-        if self.conservative:
-            new_entry[0], new_entry[1] = new_entry[1], new_entry[0]
 
         return new_entry
 
@@ -84,7 +64,7 @@ class _Hook:
              for index, field in enumerate(entry)]
         )
 
-    def generate_backtrace(self, styles: Dict[str, str]) -> List[str]:
+    def generate_backtrace(self) -> List[str]:
         '''Return the (potentially) aligned, rebuit traceback
 
         Yes, we iterate over the entries thrice. We sacrifice
@@ -93,62 +73,28 @@ class _Hook:
         '''
         backtrace = []
         for entry in self.entries:
-            backtrace.append(self.rebuild_entry(entry, styles))
+            backtrace.append(self.rebuild_entry(entry))
 
         # Get the lenght of the longest string for each field of an entry
-        lengths = self.align_all(backtrace) if self.align else [1, 1, 1, 1]
+        lengths = self.align_all(backtrace)
         return [self.align_entry(entry, lengths) for entry in backtrace]
 
 
 def hook(
-    reverse: bool = False,
-    align: bool = False,
     strip_path: bool = False,
     enable_on_envvar_only: bool = False,
     on_tty: bool = False,
-    conservative: bool = False,
-    styles: Optional[Dict[str, str]] = None,
     trace: Optional[TracebackType] = None,
     tpe: Optional[type] = None,
     value: Optional[BaseException] = None,
 ) -> None:
-    '''Hook the current excepthook to the backtrace.
-
-    If `align` is True, all parts (line numbers, file names, etc..) will be
-    aligned to the left according to the longest entry.
-
-    If `strip_path` is True, only the file name will be shown, not its full
-    path.
-
-    If `enable_on_envvar_only` is True, only if the environment variable
-    `ENABLE_BACKTRACE` is set, backtrace will be activated.
-
-    If `on_tty` is True, backtrace will be activated only if you're running
-    in a readl terminal (i.e. not piped, redirected, etc..).
-
-    If `convervative` is True, the traceback will have more seemingly original
-    style (There will be no alignment by default, 'File', 'line' and 'in'
-    prefixes and will ignore any styling provided by the user.)
-
-    See https://github.com/nir0s/backtrace/blob/master/README.md for
-    information on `styles`.
-    '''
+    '''Hook'''
     if enable_on_envvar_only and 'ENABLE_BACKTRACE' not in os.environ:
         return
 
     isatty = getattr(sys.stderr, 'isatty', lambda: False)
     if on_tty and not isatty():
         return
-
-    chosen_styles: Dict[str, str]
-    if conservative:
-        chosen_styles = CONVERVATIVE_STYLES
-        align = align or False
-    elif styles:
-        for key, default_value in STYLES.items():
-            chosen_styles[key] = styles.get(key, default_value)
-    else:
-        chosen_styles = STYLES
 
     def backtrace_excepthook(
         tpe: Optional[Union[str, type]],
@@ -160,9 +106,9 @@ def hook(
         '''
         try:
             traceback_entries = traceback.extract_tb(trace)
-            parser = _Hook(traceback_entries, align, strip_path, conservative)
+            parser = _Hook(traceback_entries, strip_path)
         except AttributeError:
-            parser = _Hook(trace, align, strip_path, conservative)
+            parser = _Hook(trace, strip_path)
 
         if tpe is None:
             type_str = 'unknown'
@@ -171,18 +117,12 @@ def hook(
         else:
             type_str = tpe.__name__
 
-        tb_message = chosen_styles['backtrace'].format('Traceback ({0}):'.format(
-            'Most recent call ' + ('first' if reverse else 'last'))) + \
-            Style.RESET_ALL
-        err_message = chosen_styles['error'].format(type_str + ': ' + str(value)) + \
-            Style.RESET_ALL
-
-        if reverse:
-            parser.reverse()
+        tb_message = click.style('Traceback (Most recent call last):', fg="yellow")
+        err_message = click.style(f"{type_str}: {value}", fg="bright_red")
 
         _flush(tb_message)
-        backtrace = parser.generate_backtrace(chosen_styles)
-        backtrace.insert(0 if reverse else len(backtrace), err_message)
+        backtrace = parser.generate_backtrace()
+        backtrace.insert(len(backtrace), err_message)
         for entry in backtrace:
             _flush(entry)
 

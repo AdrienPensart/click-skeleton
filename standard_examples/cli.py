@@ -1,5 +1,8 @@
 #!/usr/bin/env python3
 import click
+from click_skeleton import backtrace
+
+backtrace.hook(strip_path=False, enable_on_envvar_only=False, on_tty=False)
 
 CONTEXT_SETTINGS = {
     'max_content_width': 140,
@@ -19,6 +22,11 @@ def command():
     click.echo("I'm a command")
 
 
+@cli.command('raise')
+def _raise():
+    raise Exception("I'm an exception!")
+
+
 @cli.group()
 def subgroup():
     click.echo("I'm a subgroup")
@@ -30,5 +38,4 @@ def subcommand():
 
 
 if __name__ == '__main__':
-    # cli.main(prog_name="example")
     cli()

@@ -14,7 +14,6 @@ install_requires = \
  'click-help-colors>=0.9,<0.10',
  'click-option-group>=0.5.1,<0.6.0',
  'click>=8.0.1,<9.0.0',
- 'colorama>=0.4.3,<0.5.0',
  'munch>=2.5.0,<3.0.0',
  'pytest-click>=1.0.2,<2.0.0',
  'pytest>=6.0.1,<7.0.0',

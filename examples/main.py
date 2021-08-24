@@ -8,14 +8,7 @@ from examples.cli import main_cli, PROG_NAME, __version__
 
 logger = logging.getLogger(__name__)
 
-backtrace.hook(
-    reverse=False,
-    align=True,
-    strip_path=False,
-    enable_on_envvar_only=False,
-    on_tty=False,
-    conservative=False,
-)
+backtrace.hook(strip_path=False, enable_on_envvar_only=False, on_tty=False)
 
 
 def main(**kwargs: Any) -> int:

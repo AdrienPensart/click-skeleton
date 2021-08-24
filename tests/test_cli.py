@@ -1,4 +1,4 @@
-'''Test example CLI'''
+# pylint: disable=missing-module-docstring,missing-function-docstring
 import logging
 from typing import Any
 import pytest
@@ -11,13 +11,11 @@ logger = logging.getLogger(__name__)
 
 @pytest.mark.runner_setup(mix_stderr=False)
 def test_cli(cli_runner: Any) -> None:
-    '''Test that CLI does not crash without any argument or options'''
     run_cli(cli_runner, main_cli)
 
 
 @pytest.mark.runner_setup(mix_stderr=False)
-def test_cli_version(cli_runner: Any) -> None:
-    '''Test that CLI version string is the same using all methods'''
+def test_version(cli_runner: Any) -> None:
     output1 = strip_colors(run_cli(cli_runner, main_cli, ['-V']))
     output2 = strip_colors(run_cli(cli_runner, main_cli, ['--version']))
     output3 = strip_colors(run_cli(cli_runner, main_cli, ['version']))
@@ -26,8 +24,7 @@ def test_cli_version(cli_runner: Any) -> None:
 
 
 @pytest.mark.runner_setup(mix_stderr=False)
-def test_cli_help(cli_runner: Any) -> None:
-    '''Test that CLI help string is the same using all methods'''
+def test_help(cli_runner: Any) -> None:
     output1 = strip_colors(run_cli(cli_runner, main_cli, ['-h']))
     output2 = strip_colors(run_cli(cli_runner, main_cli, ['--help']))
     output3 = strip_colors(run_cli(cli_runner, main_cli, ['help']))
@@ -35,8 +32,7 @@ def test_cli_help(cli_runner: Any) -> None:
 
 
 @pytest.mark.runner_setup(mix_stderr=False)
-def test_cli_subcommand_help(cli_runner: Any) -> None:
-    '''Test that CLI subcommand help string is the same using all methods'''
+def test_subcommand_help(cli_runner: Any) -> None:
     output1 = strip_colors(run_cli(cli_runner, main_cli, ['subgroup', '-h']))
     output2 = strip_colors(run_cli(cli_runner, main_cli, ['subgroup', '--help']))
     output3 = strip_colors(run_cli(cli_runner, main_cli, ['subgroup', 'help']))
@@ -44,30 +40,31 @@ def test_cli_subcommand_help(cli_runner: Any) -> None:
 
 
 @pytest.mark.runner_setup(mix_stderr=False)
+def test_subcommand_raise(cli_runner: Any) -> None:
+    with pytest.raises(Exception):
+        run_cli(cli_runner, main_cli, ["abort"])
+
+
+@pytest.mark.runner_setup(mix_stderr=False)
 def test_readme_rst(cli_runner: Any) -> None:
-    '''Test readme generation in restructuredText'''
     run_cli(cli_runner, main_cli, ["readme", '--output', 'rst'])
 
 
 @pytest.mark.runner_setup(mix_stderr=False)
 def test_readme_markdown(cli_runner: Any) -> None:
-    '''Test readme generation in Markdown'''
     run_cli(cli_runner, main_cli, ["readme", '--output', 'markdown'])
 
 
 @pytest.mark.runner_setup(mix_stderr=False)
 def test_completion_show(cli_runner: Any) -> None:
-    '''Test generation of completion shell code'''
     run_cli(cli_runner, main_cli, ["completion", "show", "zsh"])
 
 
 @pytest.mark.runner_setup(mix_stderr=False)
 def test_subgroup(cli_runner: Any) -> None:
-    '''Test if subgroup is working'''
     run_cli(cli_runner, main_cli, ["subgroup"])
 
 
 @pytest.mark.runner_setup(mix_stderr=False)
 def test_subcommand(cli_runner: Any) -> None:
-    '''Test if subcommand is working'''
     run_cli(cli_runner, main_cli, ["subgroup", "subcommand"])
