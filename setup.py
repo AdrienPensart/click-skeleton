@@ -23,7 +23,7 @@ install_requires = \
 
 setup_kwargs = {
     'name': 'click-skeleton',
-    'version': '0.15',
+    'version': '0.16',
     'description': 'Click app skeleton',
     'long_description': None,
     'author': 'Adrien Pensart',
