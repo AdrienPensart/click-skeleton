@@ -7,10 +7,28 @@ import string
 import random
 from collections import defaultdict
 from typing import List, Any
+import click
 
 logger = logging.getLogger(__name__)
 true_values = ('enabled', 'y', 'yes', 't', 'true', 'True', 'on', '1')
 false_values = ('', 'none', 'disabled', 'n', 'no', 'f', 'false', 'False', 'off', '0')
+
+
+def split_arguments(ctx, param, value):
+    '''Arguments can be comma separated'''
+    ctx.params[param.name] = []
+    for maybe_argument_list in value:
+        for argument in mysplit(maybe_argument_list, ','):
+            if argument in ctx.params[param.name]:
+                click.secho(f'{argument} was provided too many times', fg='yellow', err=True)
+                continue
+            ctx.params[param.name].append(clean(argument))
+    return ctx.params[param.name]
+
+
+def clean(text: str):
+    '''Clean argument'''
+    return text.replace('"', '').replace("'", '')
 
 
 def recursive_str(data: Any) -> Any:
