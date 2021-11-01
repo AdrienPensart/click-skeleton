@@ -60,7 +60,7 @@ class _Hook:
     def align_entry(entry: Any, lengths: List[int]) -> str:
         '''Align one stacktrace entry'''
         return ' '.join(
-            ['{0:{1}}'.format(field, lengths[index])
+            ['{0:{1}}'.format(field, lengths[index])  # pylint: disable=consider-using-f-string
              for index, field in enumerate(entry)]
         )
 

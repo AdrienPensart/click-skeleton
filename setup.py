@@ -10,7 +10,7 @@ package_data = \
 install_requires = \
 ['click-aliases>=1.0.1,<2.0.0',
  'click-completion>=0.5.0,<0.6.0',
- 'click-didyoumean>=0.0.3,<0.0.4',
+ 'click-didyoumean>=0.3.0,<0.4.0',
  'click-help-colors>=0.9,<0.10',
  'click-option-group>=0.5.1,<0.6.0',
  'click>=8.0.1,<9.0.0',
@@ -23,7 +23,7 @@ install_requires = \
 
 setup_kwargs = {
     'name': 'click-skeleton',
-    'version': '0.17',
+    'version': '0.18',
     'description': 'Click app skeleton',
     'long_description': None,
     'author': 'Adrien Pensart',
@@ -34,7 +34,7 @@ setup_kwargs = {
     'packages': packages,
     'package_data': package_data,
     'install_requires': install_requires,
-    'python_requires': '>=3.6,<=3.9.6',
+    'python_requires': '>=3.6.2,<=3.9.6',
 }
 
 
