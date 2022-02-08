@@ -134,7 +134,7 @@ def hook(
 
 def unhook() -> None:
     '''Restore the default excepthook'''
-    sys.excepthook = sys.__excepthook__
+    sys.excepthook = sys.__excepthook__  # type: ignore
 
 
 def _extract_traceback(text: str) -> Tuple[List[Tuple[str, str, str]], List[str]]:

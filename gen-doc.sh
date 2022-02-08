@@ -12,3 +12,6 @@ poetry run rst-lint README.rst
 
 echo "doc generation (markdown)..."
 poetry run examples/main.py readme --output markdown > README.md
+
+echo "doc linting (markdown)..."
+poetry run mdformat --check ./*.md
