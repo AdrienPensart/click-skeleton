@@ -1,10 +1,12 @@
 # pylint: disable=missing-module-docstring,missing-function-docstring
 import logging
 from typing import Any
+
 import pytest
-from click_skeleton.testing import run_cli
+
 from click_skeleton.helpers import strip_colors
-from examples.cli import main_cli, __version__
+from click_skeleton.testing import run_cli
+from examples.cli import __version__, main_cli
 
 logger = logging.getLogger(__name__)
 
@@ -18,8 +20,7 @@ def test_cli(cli_runner: Any) -> None:
 def test_version(cli_runner: Any) -> None:
     output1 = strip_colors(run_cli(cli_runner, main_cli, ['-V']))
     output2 = strip_colors(run_cli(cli_runner, main_cli, ['--version']))
-    output3 = strip_colors(run_cli(cli_runner, main_cli, ['version']))
-    assert output1 == output2 == output3
+    assert output1 == output2
     assert __version__ in output1
 
 

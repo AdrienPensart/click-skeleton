@@ -2,7 +2,8 @@
 import logging
 import os
 from typing import Optional
-import click
+
+import rich_click as click  # type: ignore
 
 logger = logging.getLogger(__name__)
 

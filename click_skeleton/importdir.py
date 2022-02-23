@@ -2,7 +2,7 @@
 import os
 import re
 import sys
-from typing import Iterator, Dict, Any, List
+from typing import Any, Dict, Iterator, List
 
 
 def import_all_modules(path: str, env: Dict[str, Any]) -> List[str]:

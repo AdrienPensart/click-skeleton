@@ -12,10 +12,10 @@ click-aliases = "^1.0.1"
 semver = "^2.10.2"
 requests = "^2.24.0"
 munch = "^2.5.0"
-click-help-colors = "^0.9"
 types-requests = "^2.25.0"
 click = "^8.0.1"
 click-didyoumean = "^0.3.0"
+rich-click = "^1.0.0"
 
 [tool.poetry.dev-dependencies]
 pylint = "^2.6.0"
@@ -26,6 +26,12 @@ flake8 = "^4.0.1"
 mypy = "^0.931"
 pytest-click = "^1.0.2"
 mdformat = "^0.7.13"
+isort = "^5.10.1"
+bandit = "^1.7.2"
+safety = "^1.10.3"
+
+[tool.isort]
+multi_line_output = 3
 
 [tool.pytest.ini_options]
 minversion = "6.0"

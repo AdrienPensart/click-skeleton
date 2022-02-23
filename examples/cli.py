@@ -1,9 +1,11 @@
 '''Simple example of a CLI made with click-skeleton'''
 import logging
 from typing import Any
-import click
-from click_skeleton import add_options, skeleton, doc
+
+import rich_click as click  # type: ignore
+
 import examples.commands
+from click_skeleton import add_options, doc, skeleton
 
 PROG_NAME = 'example-cli'
 __version__ = '1.0.0'
@@ -30,7 +32,7 @@ def main_cli(ctx: click.Context, global_example: str, option_one: str, option_tw
     ctx.obj.config = 'global config storage'
 
 
-@main_cli.command(short_help='Generates a README.rst', aliases=['doc'])
+@main_cli.command(short_help='Generates a README.rst')
 @click.pass_context
 @click.option('--output', help='README output format', type=click.Choice(['rst', 'markdown']), default='rst', show_default=True)
 def readme(ctx: click.Context, output: str) -> None:

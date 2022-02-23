@@ -1,20 +1,22 @@
 '''Advanced group is a colored, what-did-you-mean with aliases commands group'''
+import importlib
 import logging
 import pkgutil
 import sys
-import importlib
 from types import ModuleType
 from typing import Any, Optional
+
 import click
-from click_help_colors import HelpColorsGroup  # type: ignore
-from click_didyoumean import DYMGroup  # type: ignore
+import rich_click  # type: ignore
 from click_aliases import ClickAliasedGroup  # type: ignore
+from click_didyoumean import DYMGroup  # type: ignore
+
 from click_skeleton.exceptions import AlreadyRegistered
 
 logger = logging.getLogger(__name__)
 
 
-class AdvancedGroup(ClickAliasedGroup, DYMGroup, HelpColorsGroup):  # type: ignore
+class AdvancedGroup(ClickAliasedGroup, DYMGroup, rich_click.RichGroup):  # type: ignore
     '''Special click group with default plugins enabled :
     - did-you-mean
     - click aliases for commands
@@ -22,13 +24,11 @@ class AdvancedGroup(ClickAliasedGroup, DYMGroup, HelpColorsGroup):  # type: igno
     - auto help command
     '''
     def __init__(self, *args: Any, aliases: Optional[str] = None, **kwargs: Any):
-        kwargs['help_headers_color'] = 'yellow'
-        kwargs['help_options_color'] = 'green'
         super().__init__(*args, **kwargs)
         self.aliases = aliases if aliases is not None else []
 
-        @click.command('help')
-        @click.pass_context
+        @rich_click.command('help')
+        @rich_click.pass_context
         def _help(ctx: Optional[click.Context]) -> None:
             '''Print help'''
             # we accept many commands, but only show help of the first one
@@ -76,3 +76,6 @@ class AdvancedGroup(ClickAliasedGroup, DYMGroup, HelpColorsGroup):  # type: igno
                     self.add_group(cli, module_name)
             except AttributeError:
                 click.secho(f'''Command module {module_name} does not contain a 'cli' definition''', fg='red', err=True)
+
+    def main(self, *args, **kwargs):
+        return click.Group.main(self, *args, **kwargs)

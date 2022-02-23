@@ -2,16 +2,18 @@
 import logging
 import traceback
 from typing import Any
-import click
-from click import testing
+
+from click.core import Group
+from click.testing import CliRunner, Result
+
 from click_skeleton import helpers
 
 logger = logging.getLogger(__name__)
 
 
-def run_cli(cli_runner: testing.CliRunner, called_cli: click.core.Group, *args: Any, **kwargs: Any) -> str:
+def run_cli(cli_runner: CliRunner, called_cli: Group, *args: Any, **kwargs: Any) -> str:
     '''Helper to run the CLI for pytest-click unit tests'''
-    result: testing.Result = cli_runner.invoke(
+    result: Result = cli_runner.invoke(
         called_cli,
         *args,
         **kwargs,

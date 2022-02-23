@@ -1,11 +1,12 @@
 '''Generates shell code completion'''
 import os
 from typing import Optional
-import click
+
 import click_completion  # type: ignore
+import rich_click as click  # type: ignore
+
 from click_skeleton.advanced_group import AdvancedGroup
 from click_skeleton.decorators import add_options
-
 
 completion_options = [
     click.option(

@@ -1,7 +1,9 @@
 '''Helpers tests'''
 import platform
+
 import pytest
-from click_skeleton.helpers import str2bool, random_password, raise_limits
+
+from click_skeleton.helpers import raise_limits, str2bool
 
 
 def test_str2bool() -> None:
@@ -10,11 +12,6 @@ def test_str2bool() -> None:
     assert not str2bool('N')
     with pytest.raises(Exception):
         str2bool('whatever')
-
-
-def test_password() -> None:
-    '''Two random password has very high probability to be different'''
-    assert random_password() != random_password()
 
 
 def test_raise_limits() -> None:

@@ -1,13 +1,13 @@
 '''Checks if a new version of current program is available on PyPI'''
 import logging
-import threading
 import re
+import threading
 from html.parser import HTMLParser
-from typing import Any, Optional, Tuple, List
-import click
-import requests
-import semver  # type: ignore
+from typing import Any, List, Optional, Tuple
 
+import requests
+import rich_click as click  # type: ignore
+import semver  # type: ignore
 
 logger = logging.getLogger(__name__)
 DEFAULT_PYPI = 'pypi.org'

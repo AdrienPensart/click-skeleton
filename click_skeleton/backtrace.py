@@ -2,10 +2,10 @@
 import os
 import sys
 import traceback
-from typing import Any, Union, List, Tuple, Optional
 from types import TracebackType
-import click
+from typing import Any, List, Optional, Tuple, Union
 
+import rich_click as click  # type: ignore
 
 TRACEBACK_IDENTIFIER = 'Traceback (most recent call last):\n'
 

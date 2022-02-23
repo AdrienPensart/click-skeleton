@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
-import click
+'''A standard example without commands folder'''
+import rich_click as click  # type: ignore
+
 from click_skeleton import backtrace
 
 backtrace.hook(strip_path=False, enable_on_envvar_only=False, on_tty=False)
@@ -17,23 +19,27 @@ def cli():
     click.echo("I'm a CLI")
 
 
-@cli.command()
+@cli.command(help='a regular command')
 def command():
+    '''a long regular help of command'''
     click.echo("I'm a command")
 
 
-@cli.command('raise')
+@cli.command('raise', help='a command that raises an exception')
 def _raise():
+    '''a long regular help of command that raises an exception'''
     raise Exception("I'm an exception!")
 
 
-@cli.group()
+@cli.group(help='I am a subgroup of commands')
 def subgroup():
+    '''a subgroup long help'''
     click.echo("I'm a subgroup")
 
 
-@subgroup.command()
+@subgroup.command(help='I am a command in a subgroup')
 def subcommand():
+    '''a subcommand long help'''
     click.echo("I'm a subcommand")
 
 

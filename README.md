@@ -16,8 +16,8 @@ Commands:
   abort                      Generates an exception
   completion                 Shell completion
   help                       Print help
-  readme (doc)               Generates a README.rst
-  subgroup (subgroup-alias)  A sub group
+  readme                     Generates a README.rst
+  subgroup (subgroup-alias)  A sub group short help
   version                    Print version
 ```
 
@@ -101,14 +101,14 @@ Options:
 ```
 Usage: example-cli subgroup [OPTIONS] COMMAND [ARGS]...
 
-  I am a subgroup!
+  I am a long subgroup help!
 
 Options:
   -h, --help  Show this message and exit.
 
 Commands:
   help        Print help
-  subcommand  A sub command
+  subcommand  A sub command short help
 ```
 
 ### example-cli subgroup subcommand
@@ -116,7 +116,7 @@ Commands:
 ```
 Usage: example-cli subgroup subcommand [OPTIONS]
 
-  I am a subcommand!
+  I am a long subcommand help!
 
 Options:
   -h, --help  Show this message and exit.

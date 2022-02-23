@@ -1,8 +1,11 @@
 '''Generates a readme composed of all commands and subcommands help strings'''
 from textwrap import indent
-from typing import Dict, Any
+from typing import Any, Dict
+
 import click
-from . import AdvancedGroup
+from rich_click import RichCommand  # type: ignore
+
+from click_skeleton.advanced_group import AdvancedGroup
 
 
 def write_header(text: str, char: str) -> None:
@@ -11,16 +14,18 @@ def write_header(text: str, char: str) -> None:
     click.echo(char * len(text))
 
 
-def write_codeblock(code: str, output: str) -> None:
-    '''Write a console codeblock, either in rst or markdown'''
-    if output == 'rst':
-        indented_code = indent(code, '  ')
-        click.echo(".. code-block::\n")
-        click.echo(indented_code)
-    elif output == 'markdown':
-        click.echo('```')
-        click.echo(code)
-        click.echo('```')
+def codeblock(code: str, output: str) -> None:
+    '''Write a codeblock'''
+    try:
+        if output == 'rst':
+            click.echo(".. code-block::\n")
+            code = indent(code, '  ')
+        elif output == 'markdown':
+            click.echo('''```''')
+        print(code)
+    finally:
+        if output == 'markdown':
+            click.echo('''```''')
 
 
 def readme(
@@ -35,10 +40,12 @@ def readme(
     elif output == 'markdown':
         click.echo('# Commands\n')
 
+    AdvancedGroup.format_help = click.Group.format_help
+    RichCommand.format_help = click.Command.format_help
+
     base_ctx = click.Context(main_cli, info_name=prog_name, **context_settings)
     with base_ctx.scope():
-        cli_help = main_cli.get_help(base_ctx)
-        write_codeblock(cli_help, output)
+        codeblock(main_cli.get_help(base_ctx), output)
 
         for command_name, command in sorted(main_cli.commands.items()):
             if command.hidden:
@@ -52,8 +59,7 @@ def readme(
 
             command_ctx = click.Context(command, info_name=command_name, parent=base_ctx)
             with command_ctx.scope():
-                command_help = command.get_help(command_ctx)
-                write_codeblock(command_help, output)
+                codeblock(command.get_help(command_ctx), output)
 
             if not isinstance(command, AdvancedGroup):
                 continue
@@ -70,5 +76,4 @@ def readme(
 
                 subcommand_ctx = click.Context(subcommand, info_name=subcommand_name, parent=command_ctx)
                 with subcommand_ctx.scope():
-                    subcommand_help = subcommand.get_help(subcommand_ctx)
-                    write_codeblock(subcommand_help, output)
+                    codeblock(subcommand.get_help(subcommand_ctx), output)

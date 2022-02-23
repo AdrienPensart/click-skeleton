@@ -1,10 +1,11 @@
 #!/usr/bin/env python3
 '''Main module, import commands and start CLI'''
-import sys
 import logging
+import sys
 from typing import Any
-from click_skeleton import helpers, backtrace, version_checker
-from examples.cli import main_cli, PROG_NAME, __version__
+
+from click_skeleton import backtrace, helpers, version_checker
+from examples.cli import PROG_NAME, __version__, main_cli
 
 logger = logging.getLogger(__name__)
 

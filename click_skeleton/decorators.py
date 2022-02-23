@@ -1,7 +1,8 @@
 '''Decorators and helpers to add options to groups and commands, and compose decorators'''
 import collections
-from typing import Union, Any, Iterable, Optional
-import click
+from typing import Any, Iterable, Optional, Union
+
+import rich_click as click  # type: ignore
 
 
 def flatten(iterables: Union[Any, Iterable[Any]]) -> Iterable[Any]:

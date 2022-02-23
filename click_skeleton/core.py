@@ -1,37 +1,37 @@
 '''Core features include an init function for skeleton'''
-import re
 import logging
-from typing import Dict, Optional, Any
-import click
-from munch import Munch, DefaultFactoryMunch  # type: ignore
-from click_help_colors.utils import _colorize  # type: ignore
+import re
+from typing import Any, Dict, Optional
+
+import rich_click as click  # type: ignore
+from munch import DefaultFactoryMunch, Munch  # type: ignore
+
 from click_skeleton.advanced_group import AdvancedGroup
-from click_skeleton.decorators import add_options
-from click_skeleton.version import version_cmd
 from click_skeleton.completion import completion_cli
+from click_skeleton.decorators import add_options
 from click_skeleton.defaults import DEFAULT_CONTEXT_SETTINGS
+from click_skeleton.version import version_cmd
 
 logger = logging.getLogger(__name__)
+
+click.rich_click.SHOW_ARGUMENTS = True
 
 
 def version_option(
         version: Optional[str] = None,
         prog_name: Optional[str] = None,
         message: str = "%(prog)s, version %(version)s",
-        message_color: Optional[str] = None,
-        prog_name_color: Optional[str] = None,
-        version_color: Optional[str] = None,
         **kwargs: Any,
 ) -> Any:
     '''Re-implement version handling with --version and -V shortcut'''
     msg_parts = []
     for placeholder in re.split(r'(%\(version\)s|%\(prog\)s)', message):
         if placeholder == '%(prog)s':
-            msg_parts.append(_colorize(prog_name, prog_name_color or message_color))
+            msg_parts.append(click.style(prog_name, fg='yellow'))
         elif placeholder == '%(version)s':
-            msg_parts.append(_colorize(version, version_color or message_color))
+            msg_parts.append(click.style(version, fg='green'))
         else:
-            msg_parts.append(_colorize(placeholder, message_color))
+            msg_parts.append(placeholder)
     message = ''.join(msg_parts)
 
     return click.version_option(
@@ -75,8 +75,6 @@ def skeleton(
         version_option(
             version=version,
             prog_name=name,
-            version_color='green',
-            prog_name_color='yellow',
         ),
         click.group(
             name=name,

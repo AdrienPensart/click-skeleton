@@ -1,13 +1,12 @@
 '''Basic helpers used in many CLI'''
-import logging
 import datetime
+import logging
 import platform
 import re
-import string
-import random
 from collections import defaultdict
-from typing import List, Any
-import click
+from typing import Any, List
+
+import rich_click as click  # type: ignore
 
 logger = logging.getLogger(__name__)
 true_values = ('enabled', 'y', 'yes', 't', 'true', 'True', 'on', '1')
@@ -96,12 +95,6 @@ def raise_limits() -> bool:
         else:
             logger.critical(f'You may need to check ulimit parameter: {error}')
         return False
-
-
-def random_password(size: int = 8) -> str:
-    '''Generates a random string from size, composed of ascii letters and digits'''
-    alphabet = string.ascii_letters + string.digits
-    return ''.join(random.choice(alphabet) for i in range(size))
 
 
 class PrettyDefaultDict(defaultdict):  # type: ignore

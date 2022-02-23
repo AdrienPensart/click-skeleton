@@ -1,9 +1,8 @@
 '''Preconfigured version command for root AdvancedGroup (skeleton)'''
-import click
-from click_help_colors import HelpColorsCommand  # type: ignore
+import rich_click as click  # type: ignore
 
 
-@click.command(short_help='Print version', cls=HelpColorsCommand, help_headers_color='yellow', help_options_color='green')  # type: ignore
+@click.command(short_help='Print version')
 @click.pass_context
 def version_cmd(ctx: click.Context) -> None:
     '''Print version, equivalent to -V and --version'''
