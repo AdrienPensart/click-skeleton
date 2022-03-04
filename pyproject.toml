@@ -1,11 +1,11 @@
 [tool.poetry]
 name = "click-skeleton"
-version = "0.20"
+version = "0.21"
 description = "Click app skeleton"
 authors = ["Adrien Pensart"]
 
 [tool.poetry.dependencies]
-python = ">=3.7,<3.10"
+python = ">=3.8,<4.0"
 click-completion = "^0.5.0"
 click-option-group = "^0.5.1"
 click-aliases = "^1.0.1"

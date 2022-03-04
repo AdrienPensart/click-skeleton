@@ -33,10 +33,6 @@ class MyParser(HTMLParser):
         if tag == 'a':
             self.output_list.append(dict(attrs).get('href'))
 
-    def error(self, message: str) -> None:
-        '''Print parsing error, implement parser abstract method'''
-        logger.error(message)
-
 
 class VersionCheckerThread(threading.Thread):
     '''Background thread to check version, to start at beginning of CLI'''
