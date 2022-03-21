@@ -1,5 +1,6 @@
 '''A subgroup example'''
 import click
+
 from click_skeleton import AdvancedGroup
 
 

@@ -1,10 +1,12 @@
 # pylint: disable=missing-module-docstring,missing-function-docstring
 import logging
 from typing import Any
+
 import pytest
-from click_skeleton.testing import run_cli
+
 from click_skeleton.helpers import strip_colors
-from examples.cli import main_cli, __version__
+from click_skeleton.testing import run_cli
+from examples.cli import __version__, main_cli
 
 logger = logging.getLogger(__name__)
 

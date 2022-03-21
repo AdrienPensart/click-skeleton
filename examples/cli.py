@@ -1,9 +1,11 @@
 '''Simple example of a CLI made with click-skeleton'''
 import logging
 from typing import Any
+
 import click
-from click_skeleton import add_options, skeleton, doc
+
 import examples.commands
+from click_skeleton import add_options, doc, skeleton
 
 PROG_NAME = 'example-cli'
 __version__ = '1.0.0'

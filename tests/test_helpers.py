@@ -1,7 +1,9 @@
 '''Helpers tests'''
 import platform
+
 import pytest
-from click_skeleton.helpers import str2bool, random_password, raise_limits
+
+from click_skeleton.helpers import raise_limits, random_password, str2bool
 
 
 def test_str2bool() -> None:

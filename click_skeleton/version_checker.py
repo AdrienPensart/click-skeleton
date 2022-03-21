@@ -6,6 +6,7 @@ from html.parser import HTMLParser
 from typing import Any, Optional, Tuple, List
 import click
 import requests
+from requests.auth import HTTPBasicAuth
 import semver  # type: ignore
 
 
@@ -36,7 +37,15 @@ class MyParser(HTMLParser):
 
 class VersionCheckerThread(threading.Thread):
     '''Background thread to check version, to start at beginning of CLI'''
-    def __init__(self, prog_name: str, current_version: str, domain: str = DEFAULT_PYPI, autostart: bool = True, auth: set = None, **kwargs: Any):
+    def __init__(
+        self,
+        prog_name: str,
+        current_version: str,
+        domain: str = DEFAULT_PYPI,
+        autostart: bool = True,
+        auth: Optional[HTTPBasicAuth] = None,
+        **kwargs: Any,
+    ):
         super().__init__(**kwargs)
         self.prog_name = prog_name
         self.new_version_warning: Optional[str] = None
@@ -82,7 +91,7 @@ class VersionCheckerThread(threading.Thread):
 {self.prog_name} : new version {last_version} available (current version: {self.current_version})
 upgrade command :
     pip3 install -U {pip_extra_index_url}{self.prog_name}
-    pipx upgrade {pipx_extra_index_url}{self.prog_name}''',
+OR  pipx upgrade {pipx_extra_index_url}{self.prog_name} (preferred)''',
                     fg='bright_blue',
                 )
         except Exception as error:  # pylint: disable=broad-except
