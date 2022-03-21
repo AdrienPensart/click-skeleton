@@ -36,20 +36,21 @@ class MyParser(HTMLParser):
 
 class VersionCheckerThread(threading.Thread):
     '''Background thread to check version, to start at beginning of CLI'''
-    def __init__(self, prog_name: str, current_version: str, domain: str = DEFAULT_PYPI, autostart: bool = True, **kwargs: Any):
+    def __init__(self, prog_name: str, current_version: str, domain: str = DEFAULT_PYPI, autostart: bool = True, auth: set = None, **kwargs: Any):
         super().__init__(**kwargs)
         self.prog_name = prog_name
         self.new_version_warning: Optional[str] = None
         self.domain = domain
         self.current_version = current_version
         self.url = f'https://{domain}/simple/{prog_name}/'
+        self.auth = auth
         if autostart:
             self.start()
 
     def run(self) -> None:
         '''This threads auto-start by default and store a result you can read at end of program execution'''
         try:
-            resp = requests.get(self.url)
+            resp = requests.get(self.url, auth=self.auth)
             if not resp.ok:
                 logger.info(f'{self.prog_name} : unable to fetch {self.url} : {resp.text}')  # pylint: disable=logging-fstring-interpolation
                 return
