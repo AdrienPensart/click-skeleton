@@ -101,12 +101,17 @@ OR  pipx upgrade {pipx_extra_index_url}{self.prog_name} (preferred)''',
         '''Join thread and print result on stderr'''
         try:
             if not self.is_alive():
-                logger.debug('Version checker thread may have exited')
+                logger.debug('Version checker thread may have already exited')
+                self.print_new_version()
                 return
             self.join()
-            if self.new_version_warning:
-                click.echo(self.new_version_warning, err=True)
-            else:
-                logger.info(f'{self.prog_name} : no new version available')  # pylint: disable=logging-fstring-interpolation
+            self.print_new_version()
         except Exception as error:  # pylint: disable=broad-except
             logger.exception(error)
+
+    def print_new_version(self):
+        '''Print new version if information available'''
+        if self.new_version_warning:
+            click.echo(self.new_version_warning, err=True)
+        else:
+            logger.info(f'{self.prog_name} : no new version available')  # pylint: disable=logging-fstring-interpolation
