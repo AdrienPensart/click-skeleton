@@ -5,7 +5,7 @@ from typing import Any
 import click
 
 import examples.commands
-from click_skeleton import add_options, doc, skeleton
+from click_skeleton import add_options, backtrace, doc, skeleton
 
 PROG_NAME = 'example-cli'
 __version__ = '1.0.0'
@@ -24,6 +24,7 @@ group_of_options = add_options(
 @group_of_options
 def main_cli(ctx: click.Context, global_example: str, option_one: str, option_two: str) -> Any:
     """Simple CLI example"""
+    backtrace.hook(strip_path=False, enable_on_envvar_only=False, on_tty=False)
     logger.info(f"in main_cli: ctx = {ctx}")
     logger.info(f"in main_cli: global_example = {global_example}")
     logger.info(f"in main_cli: option_one = {option_one}")

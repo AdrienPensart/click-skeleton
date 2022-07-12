@@ -22,8 +22,8 @@ def command():
     click.echo("I'm a command")
 
 
-@cli.command('raise')
-def _raise():
+@cli.command()
+def abort():
     raise Exception("I'm an exception!")
 
 
