@@ -15,6 +15,7 @@ Options:
 Commands:
   abort                      Generates an exception
   completion                 Shell completion
+  expanded-path              Expand option path
   help                       Print help
   readme (doc)               Generates a README.rst
   subgroup (subgroup-alias)  A sub group
@@ -71,6 +72,18 @@ Usage: example-cli completion show [OPTIONS] [[bash|fish|zsh|powershell]]
 Options:
   -i, --case-insensitive  Case insensitive completion
   -h, --help              Show this message and exit.
+```
+
+## example-cli expanded-path
+
+```
+Usage: example-cli expanded-path [OPTIONS]
+
+  Command with expanded path option
+
+Options:
+  --file PATH  File path which expands
+  -h, --help   Show this message and exit.
 ```
 
 ## example-cli help

@@ -1,6 +1,7 @@
 '''Core features include an init function for skeleton'''
 import re
 import logging
+from types import ModuleType
 from typing import Dict, Optional, Any
 import click
 from munch import Munch, DefaultFactoryMunch  # type: ignore
@@ -49,6 +50,7 @@ def skeleton(
     auto_envvar_prefix: Optional[str] = None,
     cls: Any = None,
     commands: Optional[Dict[str, Any]] = None,
+    groups_package: Optional[ModuleType] = None,
     **kwargs: Any,
 ) -> Any:
     '''Generates an skeleton group with version options included'''
@@ -71,6 +73,9 @@ def skeleton(
     commands = commands if commands is not None else {}
     commands['completion'] = completion_cli
     commands['version'] = version_cmd
+    if groups_package is not None and cls is AdvancedGroup:
+        kwargs['groups_package'] = groups_package
+
     return add_options(
         version_option(
             version=version,

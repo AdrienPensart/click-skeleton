@@ -1,5 +1,4 @@
 '''Decorators and helpers to add options to groups and commands, and compose decorators'''
-import collections
 from typing import Union, Any, Iterable, Optional
 import click
 
@@ -7,7 +6,7 @@ import click
 def flatten(iterables: Union[Any, Iterable[Any]]) -> Iterable[Any]:
     '''Recursively flatten argument'''
     for element in iterables:
-        if isinstance(element, collections.abc.Iterable) and not isinstance(element, (str, bytes)):
+        if isinstance(element, Iterable) and not isinstance(element, (str, bytes)):
             yield from flatten(element)
         else:
             yield element

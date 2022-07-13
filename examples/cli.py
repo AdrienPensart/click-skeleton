@@ -5,7 +5,7 @@ from typing import Any
 import click
 
 import examples.commands
-from click_skeleton import add_options, backtrace, doc, skeleton
+from click_skeleton import ExpandedPath, add_options, backtrace, doc, skeleton
 
 PROG_NAME = 'example-cli'
 __version__ = '1.0.0'
@@ -48,6 +48,13 @@ def abort(ctx: click.Context) -> None:
     print(f'Global option = {ctx.obj.global_option}')
     print(f'One storage = {ctx.obj.config}')
     raise Exception('throw for test purposes')
+
+
+@main_cli.command(short_help='Expand option path')
+@click.option('--file', help="File path which expands", type=ExpandedPath(), default='~/plop')
+def expanded_path(file: str) -> None:
+    '''Command with expanded path option'''
+    print(file)
 
 
 main_cli.add_groups_from_package(examples.commands)

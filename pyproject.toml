@@ -4,6 +4,13 @@ version = "0.23"
 description = "Click app skeleton"
 authors = ["Adrien Pensart"]
 
+[tool.pyright]
+include = [
+    "click_skeleton"
+]
+reportGeneralTypeIssues = false
+reportUnusedCallResult = true
+
 [tool.poetry.dependencies]
 python = ">=3.8,<4.0"
 click-completion = "^0.5.0"
@@ -26,6 +33,7 @@ flake8 = "^4.0.1"
 mypy = "^0.961"
 pytest-click = "^1.0.2"
 mdformat = "^0.7.13"
+pyright = "^1.1.260"
 
 [tool.pytest.ini_options]
 minversion = "6.0"

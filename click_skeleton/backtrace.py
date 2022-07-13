@@ -12,7 +12,7 @@ TRACEBACK_IDENTIFIER = 'Traceback (most recent call last):\n'
 
 def _flush(message: str) -> None:
     '''Print message and flush stderr'''
-    sys.stderr.write(message + '\n')
+    _ = sys.stderr.write(message + '\n')
     sys.stderr.flush()
 
 
@@ -163,6 +163,7 @@ def _extract_traceback(text: str) -> Tuple[List[Tuple[str, str, str]], List[str]
     if text.count(TRACEBACK_IDENTIFIER) == 2:
         ignore_trace = True
 
+    location_info = False
     for line in text:
         if TRACEBACK_IDENTIFIER in line:
             if ignore_trace:

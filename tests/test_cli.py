@@ -48,6 +48,11 @@ def test_subcommand_raise(cli_runner: Any) -> None:
 
 
 @pytest.mark.runner_setup(mix_stderr=False)
+def test_subcommand_expanded_path(cli_runner: Any) -> None:
+    run_cli(cli_runner, main_cli, ["expanded-path"])
+
+
+@pytest.mark.runner_setup(mix_stderr=False)
 def test_readme_rst(cli_runner: Any) -> None:
     run_cli(cli_runner, main_cli, ["readme", '--output', 'rst'])
 

@@ -21,7 +21,13 @@ class AdvancedGroup(ClickAliasedGroup, DYMGroup, HelpColorsGroup):  # type: igno
     - colored help message
     - auto help command
     '''
-    def __init__(self, *args: Any, aliases: Optional[str] = None, **kwargs: Any):
+    def __init__(
+        self,
+        *args: Any,
+        aliases: Optional[str] = None,
+        groups_package: Optional[ModuleType] = None,
+        **kwargs: Any
+    ):
         kwargs['help_headers_color'] = 'yellow'
         kwargs['help_options_color'] = 'green'
         super().__init__(*args, **kwargs)
@@ -40,6 +46,8 @@ class AdvancedGroup(ClickAliasedGroup, DYMGroup, HelpColorsGroup):  # type: igno
             ctx.exit()
 
         self.add_command(_help, 'help')
+        if groups_package is not None:
+            self.add_groups_from_package(groups_package)
 
     def add_group(self, cmd: "AdvancedGroup", name: str) -> None:
         """Registers another :class:`Group` with this group.  If the name
