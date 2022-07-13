@@ -104,7 +104,6 @@ def random_password(size: int = 8) -> str:
     return ''.join(random.choice(alphabet) for i in range(size))
 
 
-class PrettyDefaultDict(defaultdict):  # type: ignore
+class PrettyDefaultDict(defaultdict):
     '''Beautiful (correct printing) dict using collections.defaultdict'''
-    def __repr__(self) -> str:
-        return dict.__repr__(self)
+    __repr__ = dict.__repr__
