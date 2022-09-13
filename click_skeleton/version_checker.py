@@ -44,10 +44,12 @@ class VersionCheckerThread(threading.Thread):
         domain: str = DEFAULT_PYPI,
         autostart: bool = True,
         auth: Optional[HTTPBasicAuth] = None,
+        timeout: int = 15,
         **kwargs: Any,
     ):
         super().__init__(**kwargs)
         self.prog_name = prog_name
+        self.timeout = timeout
         self.new_version_warning: Optional[str] = None
         self.domain = domain
         self.current_version = current_version
@@ -59,7 +61,7 @@ class VersionCheckerThread(threading.Thread):
     def run(self) -> None:
         '''This threads auto-start by default and store a result you can read at end of program execution'''
         try:
-            resp = requests.get(self.url, auth=self.auth)
+            resp = requests.get(self.url, auth=self.auth, timeout=self.timeout)
             if not resp.ok:
                 logger.info(f'{self.prog_name} : unable to fetch {self.url} : {resp.text}')  # pylint: disable=logging-fstring-interpolation
                 return

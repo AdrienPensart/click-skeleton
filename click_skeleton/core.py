@@ -4,7 +4,7 @@ import logging
 from types import ModuleType
 from typing import Dict, Optional, Any
 import click
-from munch import Munch, DefaultFactoryMunch  # type: ignore
+from dotmap import DotMap  # type: ignore
 from click_help_colors.utils import _colorize  # type: ignore
 from click_skeleton.advanced_group import AdvancedGroup
 from click_skeleton.decorators import add_options
@@ -61,7 +61,7 @@ def skeleton(
     sensible_context_settings = DEFAULT_CONTEXT_SETTINGS
     sensible_context_settings['auto_envvar_prefix'] = auto_envvar_prefix
 
-    obj = DefaultFactoryMunch(Munch)
+    obj = DotMap()
     obj.prog_name = name
     obj.version = version
     obj.context_settings = sensible_context_settings
