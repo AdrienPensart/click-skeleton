@@ -74,4 +74,8 @@ def test_subgroup(cli_runner: Any) -> None:
 
 @pytest.mark.runner_setup(mix_stderr=False)
 def test_subcommand(cli_runner: Any) -> None:
-    run_cli(cli_runner, main_cli, ["subgroup", "subcommand"])
+    run_cli(
+        cli_runner,
+        main_cli,
+        ["subgroup", "subcommand", "--myoptions", "plop1,plop2", "--myoptions", "plop3"]
+    )
