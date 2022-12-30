@@ -132,7 +132,8 @@ Usage: example-cli subgroup subcommand [OPTIONS]
   I am a subcommand!
 
 Options:
-  -h, --help  Show this message and exit.
+  --myoptions TEXT  A splitted option
+  -h, --help        Show this message and exit.
 ```
 
 ## example-cli version

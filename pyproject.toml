@@ -3,6 +3,11 @@ name = "click-skeleton"
 version = "0.26"
 description = "Click app skeleton"
 authors = ["Adrien Pensart"]
+[tool.poetry.group.dev.dependencies]
+ruff = "^0.0.202"
+
+[tool.ruff]
+ignore = ["E501"]
 
 [tool.pyright]
 include = [

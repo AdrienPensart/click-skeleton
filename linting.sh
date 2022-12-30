@@ -4,6 +4,9 @@ export SETUPTOOLS_USE_DISTUTILS=stdlib
 
 set -e
 
+echo "lint : ruff..."
+poetry run ruff click_skeleton examples tests
+
 echo "lint : pylint..."
 poetry run pylint click_skeleton examples tests
 
