@@ -17,7 +17,7 @@ false_values = ("", "none", "disabled", "n", "no", "f", "false", "False", "off",
 
 def split_arguments(
     ctx: click.Context, param: click.Parameter, value: Any
-) -> list[str]:
+) -> List[str]:
     """Arguments can be comma separated"""
     if not param.name:
         logger.error("no option name")
