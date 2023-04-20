@@ -1,37 +1,38 @@
-'''Replace default stacktrace printing with a beautiful one'''
+"""Replace default stacktrace printing with a beautiful one"""
 import os
 import sys
 import traceback
-from typing import Any, Union, List, Tuple, Optional
 from types import TracebackType
+from typing import Any, List, Optional, Tuple, Union
+
 import click
 
-
-TRACEBACK_IDENTIFIER = 'Traceback (most recent call last):\n'
+TRACEBACK_IDENTIFIER = "Traceback (most recent call last):\n"
 
 
 def _flush(message: str) -> None:
-    '''Print message and flush stderr'''
-    _ = sys.stderr.write(message + '\n')
+    """Print message and flush stderr"""
+    _ = sys.stderr.write(message + "\n")
     sys.stderr.flush()
 
 
 class _Hook:
-    '''Stacktrace hook'''
+    """Stacktrace hook"""
+
     def __init__(
-            self,
-            entries: Any,
-            strip_path: bool = False,
+        self,
+        entries: Any,
+        strip_path: bool = False,
     ):
         self.entries = entries
         self.strip = strip_path
 
     def reverse(self) -> None:
-        '''Reverse stacktrace entries to ease reading'''
+        """Reverse stacktrace entries to ease reading"""
         self.entries = self.entries[::-1]
 
     def rebuild_entry(self, entry: Any) -> Any:
-        '''Rebuild context of entry'''
+        """Rebuild context of entry"""
         entry = list(entry)
         # This is the file path.
         entry[0] = os.path.basename(entry[0]) if self.strip else entry[0]
@@ -49,7 +50,7 @@ class _Hook:
 
     @staticmethod
     def align_all(entries: Any) -> List[int]:
-        '''Align all stacktrace entries'''
+        """Align all stacktrace entries"""
         lengths = [0, 0, 0, 0]
         for entry in entries:
             for index, field in enumerate(entry):
@@ -58,19 +59,23 @@ class _Hook:
 
     @staticmethod
     def align_entry(entry: Any, lengths: List[int]) -> str:
-        '''Align one stacktrace entry'''
-        return ' '.join(
-            ['{0:{1}}'.format(field, lengths[index])  # pylint: disable=consider-using-f-string
-             for index, field in enumerate(entry)]
+        """Align one stacktrace entry"""
+        return " ".join(
+            [
+                "{0:{1}}".format(  # pylint: disable=consider-using-f-string
+                    field, lengths[index]
+                )
+                for index, field in enumerate(entry)
+            ]
         )
 
     def generate_backtrace(self) -> List[str]:
-        '''Return the (potentially) aligned, rebuit traceback
+        """Return the (potentially) aligned, rebuit traceback
 
         Yes, we iterate over the entries thrice. We sacrifice
         performance for code readability. I mean.. come on, how long can
         your traceback be that it matters?
-        '''
+        """
         backtrace = []
         for entry in self.entries:
             backtrace.append(self.rebuild_entry(entry))
@@ -88,11 +93,11 @@ def hook(
     tpe: Optional[type] = None,
     value: Optional[BaseException] = None,
 ) -> None:
-    '''Hook'''
-    if enable_on_envvar_only and 'ENABLE_BACKTRACE' not in os.environ:
+    """Hook"""
+    if enable_on_envvar_only and "ENABLE_BACKTRACE" not in os.environ:
         return
 
-    isatty = getattr(sys.stderr, 'isatty', lambda: False)
+    isatty = getattr(sys.stderr, "isatty", lambda: False)
     if on_tty and not isatty():
         return
 
@@ -101,9 +106,9 @@ def hook(
         value: Optional[BaseException],
         trace: Optional[TracebackType] = None,
     ) -> None:
-        '''Don't know if we're getting traceback or traceback entries.
+        """Don't know if we're getting traceback or traceback entries.
         We'll try to parse a traceback object.
-        '''
+        """
         try:
             traceback_entries = traceback.extract_tb(trace)
             parser = _Hook(traceback_entries, strip_path)
@@ -111,13 +116,13 @@ def hook(
             parser = _Hook(trace, strip_path)
 
         if tpe is None:
-            type_str = 'unknown'
+            type_str = "unknown"
         elif isinstance(tpe, str):
             type_str = tpe
         else:
             type_str = tpe.__name__
 
-        tb_message = click.style('Traceback (Most recent call last):', fg="yellow")
+        tb_message = click.style("Traceback (Most recent call last):", fg="yellow")
         err_message = click.style(f"{type_str}: {value}", fg="bright_red")
 
         _flush(tb_message)
@@ -133,12 +138,12 @@ def hook(
 
 
 def unhook() -> None:
-    '''Restore the default excepthook'''
-    sys.excepthook = sys.__excepthook__  # type: ignore
+    """Restore the default excepthook"""
+    sys.excepthook = sys.__excepthook__
 
 
 def _extract_traceback(text: str) -> Tuple[List[Tuple[str, str, str]], List[str]]:
-    '''Receive a list of strings representing the input from stdin and return
+    """Receive a list of strings representing the input from stdin and return
     the restructured backtrace.
 
     This iterates over the output and once it identifies a hopefully genuine
@@ -151,7 +156,7 @@ def _extract_traceback(text: str) -> Tuple[List[Tuple[str, str, str]], List[str]
 
     Note that all parts of each stack object are stripped from newlines and
     spaces to keep the output clean.
-    '''
+    """
     capture = False
     entries = []
     all_else = []
@@ -174,7 +179,7 @@ def _extract_traceback(text: str) -> Tuple[List[Tuple[str, str, str]], List[str]
         # We're not capturing and making sure we only read lines
         # with spaces since, after the initial identifier, all traceback lines
         # contain a prefix spacing.
-        elif capture and line.startswith(' '):
+        elif capture and line.startswith(" "):
             if location_info:
                 # Line containing a file, line and module.
                 line = line.strip()
@@ -182,7 +187,7 @@ def _extract_traceback(text: str) -> Tuple[List[Tuple[str, str, str]], List[str]
             else:
                 # The corresponding line of source code.
                 line = line.rstrip("\n")
-                entries[-1] += ', ' + line
+                entries[-1] += ", " + line
             location_info = not location_info
         elif capture:
             # Line containing the module call.
@@ -195,9 +200,9 @@ def _extract_traceback(text: str) -> Tuple[List[Tuple[str, str, str]], List[str]
     traceback_entries = []
     # Build the traceback structure later passed for formatting.
     for _, line in enumerate(entries[:-2]):
-        element = line.split(',', 3)
-        _file = element[0].strip().lstrip('File').strip(' "')
-        _line = element[1].strip().lstrip('line').strip()
-        _in = element[2].strip().lstrip('in').strip()
+        element = line.split(",", 3)
+        _file = element[0].strip().lstrip("File").strip(' "')
+        _line = element[1].strip().lstrip("line").strip()
+        _in = element[2].strip().lstrip("in").strip()
         traceback_entries.append((_file, _line, _in))
     return traceback_entries, all_else

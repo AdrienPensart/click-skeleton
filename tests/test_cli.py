@@ -18,26 +18,26 @@ def test_cli(cli_runner: Any) -> None:
 
 @pytest.mark.runner_setup(mix_stderr=False)
 def test_version(cli_runner: Any) -> None:
-    output1 = strip_colors(run_cli(cli_runner, main_cli, ['-V']))
-    output2 = strip_colors(run_cli(cli_runner, main_cli, ['--version']))
-    output3 = strip_colors(run_cli(cli_runner, main_cli, ['version']))
+    output1 = strip_colors(run_cli(cli_runner, main_cli, ["-V"]))
+    output2 = strip_colors(run_cli(cli_runner, main_cli, ["--version"]))
+    output3 = strip_colors(run_cli(cli_runner, main_cli, ["version"]))
     assert output1 == output2 == output3
     assert __version__ in output1
 
 
 @pytest.mark.runner_setup(mix_stderr=False)
 def test_help(cli_runner: Any) -> None:
-    output1 = strip_colors(run_cli(cli_runner, main_cli, ['-h']))
-    output2 = strip_colors(run_cli(cli_runner, main_cli, ['--help']))
-    output3 = strip_colors(run_cli(cli_runner, main_cli, ['help']))
+    output1 = strip_colors(run_cli(cli_runner, main_cli, ["-h"]))
+    output2 = strip_colors(run_cli(cli_runner, main_cli, ["--help"]))
+    output3 = strip_colors(run_cli(cli_runner, main_cli, ["help"]))
     assert output1 == output2 == output3
 
 
 @pytest.mark.runner_setup(mix_stderr=False)
 def test_subcommand_help(cli_runner: Any) -> None:
-    output1 = strip_colors(run_cli(cli_runner, main_cli, ['subgroup', '-h']))
-    output2 = strip_colors(run_cli(cli_runner, main_cli, ['subgroup', '--help']))
-    output3 = strip_colors(run_cli(cli_runner, main_cli, ['subgroup', 'help']))
+    output1 = strip_colors(run_cli(cli_runner, main_cli, ["subgroup", "-h"]))
+    output2 = strip_colors(run_cli(cli_runner, main_cli, ["subgroup", "--help"]))
+    output3 = strip_colors(run_cli(cli_runner, main_cli, ["subgroup", "help"]))
     assert output1 == output2 == output3
 
 
@@ -54,12 +54,12 @@ def test_subcommand_expanded_path(cli_runner: Any) -> None:
 
 @pytest.mark.runner_setup(mix_stderr=False)
 def test_readme_rst(cli_runner: Any) -> None:
-    run_cli(cli_runner, main_cli, ["readme", '--output', 'rst'])
+    run_cli(cli_runner, main_cli, ["readme", "--output", "rst"])
 
 
 @pytest.mark.runner_setup(mix_stderr=False)
 def test_readme_markdown(cli_runner: Any) -> None:
-    run_cli(cli_runner, main_cli, ["readme", '--output', 'markdown'])
+    run_cli(cli_runner, main_cli, ["readme", "--output", "markdown"])
 
 
 @pytest.mark.runner_setup(mix_stderr=False)
@@ -77,5 +77,12 @@ def test_subcommand(cli_runner: Any) -> None:
     run_cli(
         cli_runner,
         main_cli,
-        ["subgroup", "subcommand", "--myoptions", "plop1,plop2", "--myoptions", "plop3"]
+        [
+            "subgroup",
+            "subcommand",
+            "--myoptions",
+            "plop1,plop2",
+            "--myoptions",
+            "plop3",
+        ],
     )

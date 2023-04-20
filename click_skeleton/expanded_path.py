@@ -1,14 +1,16 @@
-'''ExpandedPath is a improved click.Path with HOME expanded and check for write access'''
+"""ExpandedPath is a improved click.Path with HOME expanded and check for write access"""
 import logging
 import os
 from typing import Optional
+
 import click
 
 logger = logging.getLogger(__name__)
 
 
 class ExpandedPath(click.ParamType):
-    '''Re-implement click Path to auto-expand "~" on UNIX'''
+    """Re-implement click Path to auto-expand "~" on UNIX"""
+
     envvar_list_splitter = os.path.pathsep
 
     def __init__(
@@ -42,12 +44,9 @@ class ExpandedPath(click.ParamType):
             self.path_type = "Path"
 
     def convert(
-        self,
-        value: str,
-        param: Optional[click.Parameter],
-        ctx: Optional[click.Context]
+        self, value: str, param: Optional[click.Parameter], ctx: Optional[click.Context]
     ) -> str:
-        '''Expands user HOME and permits to check for write access without file needs to exist'''
+        """Expands user HOME and permits to check for write access without file needs to exist"""
         value = os.path.expanduser(value)
         is_dash = self.file_okay and self.allow_dash and value in (b"-", "-")
         if is_dash:
@@ -69,14 +68,14 @@ class ExpandedPath(click.ParamType):
         if self.writable and not os.access(value, os.W_OK):
             pdir = os.path.dirname(value)
             if not pdir:
-                pdir = '.'
+                pdir = "."
             if not os.access(pdir, os.W_OK):
                 self.fail(f"{self.path_type} {value} is not writable.", param, ctx)
 
         if self.readable and not os.access(value, os.R_OK):
             pdir = os.path.dirname(value)
             if not pdir:
-                pdir = '.'
+                pdir = "."
             if not os.access(pdir, os.R_OK):
                 self.fail(f"{self.path_type} {value} is not readable.", param, ctx)
 

@@ -1,5 +1,5 @@
-'''Click skeleton exceptions'''
+"""Click skeleton exceptions"""
 
 
 class AlreadyRegistered(Exception):
-    '''When a command, group or alias is already registered'''
+    """When a command, group or alias is already registered"""

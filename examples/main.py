@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-'''Main module, import commands and start CLI'''
+"""Main module, import commands and start CLI"""
 import logging
 
 from click_skeleton import helpers, version_checker
@@ -9,7 +9,7 @@ logger = logging.getLogger(__name__)
 
 
 def main() -> None:
-    '''click skeleton entrypoint, it will check if a new version is available'''
+    """click skeleton entrypoint, it will check if a new version is available"""
     helpers.raise_limits()
     version_check = version_checker.VersionCheckerThread(
         prog_name=PROG_NAME,
@@ -22,5 +22,5 @@ def main() -> None:
         raise error
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
