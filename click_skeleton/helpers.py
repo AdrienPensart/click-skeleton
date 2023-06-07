@@ -37,7 +37,7 @@ def split_arguments(
             if clean:
                 ctx.params[param.name].append(clean_quotes(argument))
             else:
-                ctx.params[param.name] = argument
+                ctx.params[param.name].append(argument)
     return ctx.params[param.name]
 
 
