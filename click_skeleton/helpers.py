@@ -16,7 +16,10 @@ false_values = ("", "none", "disabled", "n", "no", "f", "false", "False", "off",
 
 
 def split_arguments(
-    ctx: click.Context, param: click.Parameter, value: Any
+    ctx: click.Context,
+    param: click.Parameter,
+    value: Any,
+    clean: bool = True,
 ) -> List[str]:
     """Arguments can be comma separated"""
     if not param.name:
@@ -31,11 +34,14 @@ def split_arguments(
                     f"{argument} was provided too many times", fg="yellow", err=True
                 )
                 continue
-            ctx.params[param.name].append(clean(argument))
+            if clean:
+                ctx.params[param.name].append(clean_quotes(argument))
+            else:
+                ctx.params[param.name] = argument
     return ctx.params[param.name]
 
 
-def clean(text: str) -> str:
+def clean_quotes(text: str) -> str:
     """Clean argument"""
     return text.replace('"', "").replace("'", "")
 
