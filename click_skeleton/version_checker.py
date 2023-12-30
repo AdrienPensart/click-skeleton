@@ -3,10 +3,10 @@ import logging
 import re
 import threading
 from html.parser import HTMLParser
-from typing import Any, List, Optional, Tuple
 
 import click
 import requests
+from beartype.typing import Any, List, Tuple
 from requests.auth import HTTPBasicAuth
 from semver.version import Version
 
@@ -17,13 +17,11 @@ DEFAULT_PYPI = "pypi.org"
 class MyParser(HTMLParser):
     """Parser to extract http links"""
 
-    def __init__(
-        self, *args: Any, output_list: Optional[List[Any]] = None, **kwargs: Any
-    ):
+    def __init__(self, *args: Any, output_list: List[Any] | None = None, **kwargs: Any):
         super().__init__(*args, **kwargs)
         self.output_list = output_list if output_list is not None else []
 
-    def handle_starttag(self, tag: str, attrs: List[Tuple[str, Optional[str]]]) -> None:
+    def handle_starttag(self, tag: str, attrs: List[Tuple[str, str | None]]) -> None:
         """We parse only http links"""
         if tag == "a":
             self.output_list.append(dict(attrs).get("href"))
@@ -38,14 +36,14 @@ class VersionCheckerThread(threading.Thread):
         current_version: str,
         domain: str = DEFAULT_PYPI,
         autostart: bool = True,
-        auth: Optional[HTTPBasicAuth] = None,
+        auth: HTTPBasicAuth | None = None,
         timeout: int = 15,
         **kwargs: Any,
     ):
         super().__init__(**kwargs)
         self.prog_name = prog_name
         self.timeout = timeout
-        self.new_version_warning: Optional[str] = None
+        self.new_version_warning: str | None = None
         self.domain = domain
         self.current_version = current_version
         self.url = f"https://{domain}/simple/{prog_name}/"

@@ -4,6 +4,8 @@ export SETUPTOOLS_USE_DISTUTILS=stdlib
 
 set -e
 
+sh code-format.sh
+
 echo "lint : ruff..."
 poetry run ruff click_skeleton examples tests
 

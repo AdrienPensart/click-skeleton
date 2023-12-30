@@ -2,10 +2,10 @@
 import logging
 import re
 from types import ModuleType
-from typing import Any, Dict, Optional
 
 import click
-from click_help_colors.utils import _colorize  # type: ignore
+from beartype.typing import Any, Dict, Optional
+from click_help_colors.utils import _colorize
 from dotmap import DotMap  # type: ignore
 
 from click_skeleton.advanced_group import AdvancedGroup
@@ -28,6 +28,10 @@ def version_option(
 ) -> Any:
     """Re-implement version handling with --version and -V shortcut"""
     msg_parts = []
+    if prog_name is None:
+        prog_name = ""
+    if version is None:
+        version = ""
     for placeholder in re.split(r"(%\(version\)s|%\(prog\)s)", message):
         if placeholder == "%(prog)s":
             msg_parts.append(_colorize(prog_name, prog_name_color or message_color))

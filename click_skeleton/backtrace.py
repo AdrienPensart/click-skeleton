@@ -3,9 +3,9 @@ import os
 import sys
 import traceback
 from types import TracebackType
-from typing import Any, List, Optional, Tuple, Union
 
 import click
+from beartype.typing import Any, List, Tuple, Union
 
 TRACEBACK_IDENTIFIER = "Traceback (most recent call last):\n"
 
@@ -89,9 +89,9 @@ def hook(
     strip_path: bool = False,
     enable_on_envvar_only: bool = False,
     on_tty: bool = False,
-    trace: Optional[TracebackType] = None,
-    tpe: Optional[type] = None,
-    value: Optional[BaseException] = None,
+    trace: TracebackType | None = None,
+    tpe: type | None = None,
+    value: BaseException | None = None,
 ) -> None:
     """Hook"""
     if enable_on_envvar_only and "ENABLE_BACKTRACE" not in os.environ:
@@ -102,9 +102,9 @@ def hook(
         return
 
     def backtrace_excepthook(
-        tpe: Optional[Union[str, type]],
-        value: Optional[BaseException],
-        trace: Optional[TracebackType] = None,
+        tpe: Union[str, type] | None,
+        value: BaseException | None,
+        trace: TracebackType | None = None,
     ) -> None:
         """Don't know if we're getting traceback or traceback entries.
         We'll try to parse a traceback object.

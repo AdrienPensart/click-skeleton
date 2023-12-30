@@ -1,8 +1,8 @@
 """Simple example of a CLI made with click-skeleton"""
 import logging
-from typing import Any
 
 import click
+from beartype.typing import Any
 
 import examples.commands
 from click_skeleton import ExpandedPath, add_options, backtrace, doc, skeleton

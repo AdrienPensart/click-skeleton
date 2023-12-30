@@ -1,7 +1,6 @@
 """ExpandedPath is a improved click.Path with HOME expanded and check for write access"""
 import logging
 import os
-from typing import Optional
 
 import click
 
@@ -22,7 +21,7 @@ class ExpandedPath(click.ParamType):
         readable: bool = True,
         resolve_path: bool = False,
         allow_dash: bool = False,
-        path_type: Optional[str] = None,
+        path_type: str | None = None,
     ):
         self.exists = exists
         self.file_okay = file_okay
@@ -44,7 +43,7 @@ class ExpandedPath(click.ParamType):
             self.path_type = "Path"
 
     def convert(
-        self, value: str, param: Optional[click.Parameter], ctx: Optional[click.Context]
+        self, value: str, param: click.Parameter | None, ctx: click.Context | None
     ) -> str:
         """Expands user HOME and permits to check for write access without file needs to exist"""
         value = os.path.expanduser(value)

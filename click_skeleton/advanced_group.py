@@ -4,12 +4,12 @@ import logging
 import pkgutil
 import sys
 from types import ModuleType
-from typing import Any, Optional
 
 import click
+from beartype.typing import Any, Optional
 from click_aliases import ClickAliasedGroup  # type: ignore
 from click_didyoumean import DYMGroup  # type: ignore
-from click_help_colors import HelpColorsGroup  # type: ignore
+from click_help_colors import HelpColorsGroup
 
 from click_skeleton.exceptions import AlreadyRegistered
 

@@ -1,6 +1,6 @@
 """Preconfigured version command for root AdvancedGroup (skeleton)"""
 import click
-from click_help_colors import HelpColorsCommand  # type: ignore
+from click_help_colors import HelpColorsCommand
 
 
 @click.command(

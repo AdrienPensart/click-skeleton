@@ -6,9 +6,9 @@ import random
 import re
 import string
 from collections import defaultdict
-from typing import Any, List
 
 import click
+from beartype.typing import Any, List
 
 logger = logging.getLogger(__name__)
 true_values = ("enabled", "y", "yes", "t", "true", "True", "on", "1")

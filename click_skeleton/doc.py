@@ -1,8 +1,8 @@
 """Generates a readme composed of all commands and subcommands help strings"""
 from textwrap import indent
-from typing import Any, Dict
 
 import click
+from beartype.typing import Any, Dict
 
 from . import AdvancedGroup
 

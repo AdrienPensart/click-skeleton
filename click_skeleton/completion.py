@@ -1,6 +1,5 @@
 """Generates shell code completion"""
 import os
-from typing import Optional
 
 import click
 import click_completion  # type: ignore
@@ -53,9 +52,7 @@ def show(shell: str, case_insensitive: bool) -> None:
 @completion_cli.command(short_help="Install the click-completion-command completion")
 @add_options(completion_options, append_option)
 @click.argument("path", required=False)
-def install(
-    append: bool, case_insensitive: bool, shell: str, path: Optional[str]
-) -> None:
+def install(append: bool, case_insensitive: bool, shell: str, path: str | None) -> None:
     """Auto install shell completion code in your rc file"""
     extra_env = (
         {"_CLICK_COMPLETION_COMMAND_CASE_INSENSITIVE_COMPLETE": "ON"}

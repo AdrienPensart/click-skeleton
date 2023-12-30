@@ -1,7 +1,6 @@
 """Decorators and helpers to add options to groups and commands, and compose decorators"""
-from typing import Any, Iterable, Optional, Union
-
 import click
+from beartype.typing import Any, Iterable, Union
 
 
 def flatten(iterables: Union[Any, Iterable[Any]]) -> Iterable[Any]:
@@ -24,7 +23,7 @@ def add_options(*options: Any) -> Any:
     return _add_options
 
 
-def group(name: Optional[str] = None, **attrs: Any) -> Any:
+def group(name: str | None = None, **attrs: Any) -> Any:
     """Creates a new :class:`Group` with a function as callback.  This
     works otherwise the same as :func:`command` just that the `cls`
     parameter is set to :class:`Group`.

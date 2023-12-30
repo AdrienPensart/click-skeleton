@@ -1,9 +1,9 @@
 """Improved click.testing test runner"""
 import logging
 import traceback
-from typing import Any
 
 import click
+from beartype.typing import Any
 from click import testing
 
 from click_skeleton import helpers

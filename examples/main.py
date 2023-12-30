@@ -10,7 +10,7 @@ logger = logging.getLogger(__name__)
 
 def main() -> None:
     """click skeleton entrypoint, it will check if a new version is available"""
-    helpers.raise_limits()
+    _ = helpers.raise_limits()
     version_check = version_checker.VersionCheckerThread(
         prog_name=PROG_NAME,
         current_version=__version__,
