@@ -1,4 +1,5 @@
 """Improved click.testing test runner"""
+
 import logging
 import traceback
 

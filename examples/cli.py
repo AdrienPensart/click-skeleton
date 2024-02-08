@@ -1,4 +1,5 @@
 """Simple example of a CLI made with click-skeleton"""
+
 import logging
 
 import click

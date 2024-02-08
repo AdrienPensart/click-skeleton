@@ -1,4 +1,5 @@
 """Click skeleton helpers to ease CLI definitions"""
+
 import logging
 
 import click

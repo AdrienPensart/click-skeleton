@@ -1,4 +1,5 @@
 """Basic helpers used in many CLI"""
+
 import datetime
 import logging
 import platform
@@ -95,9 +96,18 @@ def mysplit(text: str, delimiter: str = ",", **kwargs: Any) -> List[str]:
 
 def raise_limits() -> bool:
     """Permits to open a lot of system handles, supports Windows"""
-    if platform.system() == "Windows":
+    if "Windows" in platform.system():
         logger.warning("Cannot raise system limits on Windows")
-        return False
+        return True
+
+    if "Darwin" in platform.system():
+        logger.warning("Cannot raise system limits on Darwin")
+        return True
+
+    if "macOS" in platform.system():
+        logger.warning("Cannot raise system limits on macOS")
+        return True
+
     # resource module is only available on UNIX systems
     import resource  # pylint: disable=import-error
 
@@ -113,7 +123,7 @@ def raise_limits() -> bool:
             )
         else:
             logger.critical(f"You may need to check ulimit parameter: {error}")
-        return False
+    return False
 
 
 def random_password(size: int = 8) -> str:

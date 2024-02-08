@@ -1,4 +1,5 @@
 """Tests VersionChecker class"""
+
 from click_skeleton.version_checker import VersionCheckerThread
 
 

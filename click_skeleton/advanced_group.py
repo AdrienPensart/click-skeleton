@@ -1,4 +1,5 @@
 """Advanced group is a colored, what-did-you-mean with aliases commands group"""
+
 import importlib
 import logging
 import pkgutil

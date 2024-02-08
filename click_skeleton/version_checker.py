@@ -1,4 +1,5 @@
 """Checks if a new version of current program is available on PyPI"""
+
 import logging
 import re
 import threading

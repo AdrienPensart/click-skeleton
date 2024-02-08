@@ -1,4 +1,5 @@
 """Generates shell code completion"""
+
 import os
 
 import click
@@ -17,7 +18,7 @@ completion_options = [
     click.argument(
         "shell",
         required=False,
-        type=click_completion.DocumentedChoice(click_completion.core.shells),
+        type=click_completion.DocumentedChoice(click_completion.shells),
     ),
 ]
 
@@ -46,7 +47,7 @@ def show(shell: str, case_insensitive: bool) -> None:
         if case_insensitive
         else {}
     )
-    click.echo(click_completion.core.get_code(shell, extra_env=extra_env))
+    click.echo(click_completion.get_code(shell, extra_env=extra_env))
 
 
 @completion_cli.command(short_help="Install the click-completion-command completion")
@@ -59,10 +60,10 @@ def install(append: bool, case_insensitive: bool, shell: str, path: str | None) 
         if case_insensitive
         else {}
     )
-    shell, path = click_completion.core.install(
+    shell, install_path = click_completion.install(
         shell=shell, path=path, append=append, extra_env=extra_env
     )
-    click.echo(f"{shell} completion installed in {path}")
+    click.echo(f"{shell} completion installed in {install_path}")
 
 
 def custom_startswith(string: str, incomplete: str) -> bool:
@@ -73,5 +74,5 @@ def custom_startswith(string: str, incomplete: str) -> bool:
     return string.startswith(incomplete)
 
 
-click_completion.core.startswith = custom_startswith
+click_completion.startswith = custom_startswith
 click_completion.init()

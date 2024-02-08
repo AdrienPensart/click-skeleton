@@ -1,5 +1,4 @@
 """Helpers tests"""
-import platform
 
 import pytest
 
@@ -21,7 +20,4 @@ def test_password() -> None:
 
 def test_raise_limits() -> None:
     """Important helper as we may need a lot of file handles, does not work on Mac OS X"""
-    if platform.system() in ("Darwin", "Windows"):
-        assert raise_limits() is False
-    else:
-        assert raise_limits() is True
+    assert raise_limits() is True

@@ -1,4 +1,5 @@
 """Replace default stacktrace printing with a beautiful one"""
+
 import os
 import sys
 import traceback

@@ -1,4 +1,5 @@
 """Generates a readme composed of all commands and subcommands help strings"""
+
 from textwrap import indent
 
 import click

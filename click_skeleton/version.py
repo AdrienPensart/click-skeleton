@@ -1,4 +1,5 @@
 """Preconfigured version command for root AdvancedGroup (skeleton)"""
+
 import click
 from click_help_colors import HelpColorsCommand
 
