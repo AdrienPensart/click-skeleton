@@ -7,7 +7,7 @@ set -e
 sh code-format.sh
 
 echo "lint : ruff..."
-poetry run ruff click_skeleton examples tests
+poetry run ruff check click_skeleton examples tests
 
 echo "lint : pylint..."
 poetry run pylint click_skeleton examples tests

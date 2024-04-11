@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "click-skeleton"
-version = "0.29.1"
+version = "0.30.0"
 description = "Click app skeleton"
 authors = ["Adrien Pensart"]
 
@@ -21,7 +21,6 @@ reportAssignmentType = false
 
 [tool.poetry.dependencies]
 python = ">=3.11,<4.0"
-click-completion = "^0.5.0"
 click-option-group = "^0.5.1"
 click-aliases = "^1.0.1"
 semver = "^3.0.0"
@@ -31,15 +30,15 @@ types-requests = "^2.25.0"
 click = "^8.0.1"
 click-didyoumean = "^0.3.0"
 dotmap = "^1.3.30"
-beartype = "^0.17.0"
+beartype = "^0.18"
 
 [tool.poetry.group.dev.dependencies]
-black = "^24.0.0"
+black = "^24.0"
 ruff = "<1.0"
 pylint = "^3.0.0"
 coverage-badge = "^1.0.1"
 restructuredtext-lint = "^1.3.2"
-pytest-cov = "^4.0.0"
+pytest-cov = "^5.0.0"
 flake8 = "^7.0.0"
 mypy = "^1.2.0"
 pytest-click = "^1.0.2"

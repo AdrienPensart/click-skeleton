@@ -14,7 +14,6 @@ Options:
 
 Commands:
   abort                      Generates an exception
-  completion                 Shell completion
   expanded-path              Expand option path
   help                       Print help
   readme (doc)               Generates a README.rst
@@ -31,47 +30,6 @@ Usage: example-cli abort [OPTIONS]
 
 Options:
   -h, --help  Show this message and exit.
-```
-
-## example-cli completion
-
-```
-Usage: example-cli completion [OPTIONS] COMMAND [ARGS]...
-
-  Shell completion subcommand
-
-Options:
-  -h, --help  Show this message and exit.
-
-Commands:
-  help                   Print help
-  install                Install the click-completion-command completion
-  show (generate,print)  Show the click-completion-command completion code
-```
-
-### example-cli completion install
-
-```
-Usage: example-cli completion install [OPTIONS] [[bash|fish|zsh|powershell]] [PATH]
-
-  Auto install shell completion code in your rc file
-
-Options:
-  -i, --case-insensitive  Case insensitive completion
-  --append / --overwrite  Append the completion code to the file
-  -h, --help              Show this message and exit.
-```
-
-### example-cli completion show
-
-```
-Usage: example-cli completion show [OPTIONS] [[bash|fish|zsh|powershell]]
-
-  Generate shell code to enable completion
-
-Options:
-  -i, --case-insensitive  Case insensitive completion
-  -h, --help              Show this message and exit.
 ```
 
 ## example-cli expanded-path

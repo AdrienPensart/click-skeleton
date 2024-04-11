@@ -10,7 +10,6 @@ from click_help_colors.utils import _colorize
 from dotmap import DotMap  # type: ignore
 
 from click_skeleton.advanced_group import AdvancedGroup
-from click_skeleton.completion import completion_cli
 from click_skeleton.decorators import add_options
 from click_skeleton.defaults import DEFAULT_CONTEXT_SETTINGS
 from click_skeleton.version import version_cmd
@@ -76,7 +75,6 @@ def skeleton(
     context_settings["obj"] = obj
 
     commands = commands if commands is not None else {}
-    commands["completion"] = completion_cli
     commands["version"] = version_cmd
     if groups_package is not None and cls is AdvancedGroup:
         kwargs["groups_package"] = groups_package

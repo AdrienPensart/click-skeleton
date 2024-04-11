@@ -63,11 +63,6 @@ def test_readme_markdown(cli_runner: Any) -> None:
 
 
 @pytest.mark.runner_setup(mix_stderr=False)
-def test_completion_show(cli_runner: Any) -> None:
-    run_cli(cli_runner, main_cli, ["completion", "show", "zsh"])
-
-
-@pytest.mark.runner_setup(mix_stderr=False)
 def test_subgroup(cli_runner: Any) -> None:
     run_cli(cli_runner, main_cli, ["subgroup"])
 
