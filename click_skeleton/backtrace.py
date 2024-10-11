@@ -14,7 +14,7 @@ TRACEBACK_IDENTIFIER = "Traceback (most recent call last):\n"
 def _flush(message: str) -> None:
     """Print message and flush stderr"""
     _ = sys.stderr.write(message + "\n")
-    sys.stderr.flush()
+    _ = sys.stderr.flush()
 
 
 class _Hook:
