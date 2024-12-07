@@ -8,7 +8,7 @@ from types import ModuleType
 
 import click
 from beartype.typing import Any, Optional
-from click_aliases import ClickAliasedGroup  # type: ignore
+from click_aliases import ClickAliasedGroup
 from click_didyoumean import DYMGroup  # type: ignore
 from click_help_colors import HelpColorsGroup
 
@@ -17,7 +17,7 @@ from click_skeleton.exceptions import AlreadyRegistered
 logger = logging.getLogger(__name__)
 
 
-class AdvancedGroup(ClickAliasedGroup, DYMGroup, HelpColorsGroup):
+class AdvancedGroup(ClickAliasedGroup, DYMGroup, HelpColorsGroup):  # type: ignore[misc]
     """Special click group with default plugins enabled :
     - did-you-mean
     - click aliases for commands
@@ -28,7 +28,7 @@ class AdvancedGroup(ClickAliasedGroup, DYMGroup, HelpColorsGroup):
     def __init__(
         self,
         *args: Any,
-        aliases: Optional[str] = None,
+        aliases: Optional[list[str]] = None,
         groups_package: Optional[ModuleType] = None,
         **kwargs: Any,
     ):
