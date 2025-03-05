@@ -4,10 +4,10 @@ import logging
 import re
 import threading
 from html.parser import HTMLParser
+from typing import Any
 
 import click
 import requests
-from beartype.typing import Any, List, Tuple
 from requests.auth import HTTPBasicAuth
 from semver.version import Version
 
@@ -18,11 +18,11 @@ DEFAULT_PYPI = "pypi.org"
 class MyParser(HTMLParser):
     """Parser to extract http links"""
 
-    def __init__(self, *args: Any, output_list: List[Any] | None = None, **kwargs: Any):
+    def __init__(self, *args: Any, output_list: list[Any] | None = None, **kwargs: Any):
         super().__init__(*args, **kwargs)
         self.output_list = output_list if output_list is not None else []
 
-    def handle_starttag(self, tag: str, attrs: List[Tuple[str, str | None]]) -> None:
+    def handle_starttag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:
         """We parse only http links"""
         if tag == "a":
             self.output_list.append(dict(attrs).get("href"))

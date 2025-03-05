@@ -3,9 +3,9 @@
 import logging
 import re
 from types import ModuleType
+from typing import Any
 
 import click
-from beartype.typing import Any, Dict, Optional
 from click_help_colors.utils import _colorize
 from dotmap import DotMap  # type: ignore
 
@@ -18,12 +18,12 @@ logger = logging.getLogger(__name__)
 
 
 def version_option(
-    version: Optional[str] = None,
-    prog_name: Optional[str] = None,
+    version: None | str = None,
+    prog_name: None | str = None,
     message: str = "%(prog)s, version %(version)s",
-    message_color: Optional[str] = None,
-    prog_name_color: Optional[str] = None,
-    version_color: Optional[str] = None,
+    message_color: None | str = None,
+    prog_name_color: None | str = None,
+    version_color: None | str = None,
     **kwargs: Any,
 ) -> Any:
     """Re-implement version handling with --version and -V shortcut"""
@@ -49,10 +49,10 @@ def version_option(
 def skeleton(
     name: str,
     version: str,
-    auto_envvar_prefix: Optional[str] = None,
+    auto_envvar_prefix: None | str = None,
     cls: Any = None,
-    commands: Optional[Dict[str, Any]] = None,
-    groups_package: Optional[ModuleType] = None,
+    commands: None | dict[str, Any] = None,
+    groups_package: None | ModuleType = None,
     **kwargs: Any,
 ) -> Any:
     """Generates an skeleton group with version options included"""

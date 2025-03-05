@@ -7,9 +7,9 @@ import random
 import re
 import string
 from collections import defaultdict
+from typing import Any
 
 import click
-from beartype.typing import Any, List
 
 logger = logging.getLogger(__name__)
 true_values = ("enabled", "y", "yes", "t", "true", "True", "on", "1")
@@ -21,7 +21,7 @@ def split_arguments(
     param: click.Parameter,
     value: Any,
     clean: bool = True,
-) -> List[str]:
+) -> list[str]:
     """Arguments can be comma separated"""
     if not param.name:
         logger.error("no option name")
@@ -89,7 +89,7 @@ def strip_colors(text: str) -> str:
     return ansi_escape.sub("", text)
 
 
-def mysplit(text: str, delimiter: str = ",", **kwargs: Any) -> List[str]:
+def mysplit(text: str, delimiter: str = ",", **kwargs: Any) -> list[str]:
     """Split a string without returning empty list if string is empty"""
     return [x for x in text.split(sep=delimiter, **kwargs) if x]
 

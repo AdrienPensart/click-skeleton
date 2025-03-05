@@ -4,9 +4,9 @@ import os
 import sys
 import traceback
 from types import TracebackType
+from typing import Any
 
 import click
-from beartype.typing import Any, List, Tuple, Union
 
 TRACEBACK_IDENTIFIER = "Traceback (most recent call last):\n"
 
@@ -50,7 +50,7 @@ class _Hook:
         return new_entry
 
     @staticmethod
-    def align_all(entries: Any) -> List[int]:
+    def align_all(entries: Any) -> list[int]:
         """Align all stacktrace entries"""
         lengths = [0, 0, 0, 0]
         for entry in entries:
@@ -59,7 +59,7 @@ class _Hook:
         return lengths
 
     @staticmethod
-    def align_entry(entry: Any, lengths: List[int]) -> str:
+    def align_entry(entry: Any, lengths: list[int]) -> str:
         """Align one stacktrace entry"""
         return " ".join(
             [
@@ -70,7 +70,7 @@ class _Hook:
             ]
         )
 
-    def generate_backtrace(self) -> List[str]:
+    def generate_backtrace(self) -> list[str]:
         """Return the (potentially) aligned, rebuit traceback
 
         Yes, we iterate over the entries thrice. We sacrifice
@@ -103,7 +103,7 @@ def hook(
         return
 
     def backtrace_excepthook(
-        tpe: Union[str, type] | None,
+        tpe: str | type | None,
         value: BaseException | None,
         trace: TracebackType | None = None,
     ) -> None:
@@ -143,7 +143,7 @@ def unhook() -> None:
     sys.excepthook = sys.__excepthook__
 
 
-def _extract_traceback(text: str) -> Tuple[List[Tuple[str, str, str]], List[str]]:
+def _extract_traceback(text: str) -> tuple[list[tuple[str, str, str]], list[str]]:
     """Receive a list of strings representing the input from stdin and return
     the restructured backtrace.
 

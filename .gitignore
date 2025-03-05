@@ -16,3 +16,6 @@ htmlcov
 .mypy_cache
 .pytest_cache
 .ruff_cache
+.tool-versions
+.python-version
+.vscode

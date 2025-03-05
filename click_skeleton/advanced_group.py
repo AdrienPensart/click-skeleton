@@ -5,9 +5,9 @@ import logging
 import pkgutil
 import sys
 from types import ModuleType
+from typing import Any
 
 import click
-from beartype.typing import Any, Optional
 from click_aliases import ClickAliasedGroup
 from click_didyoumean import DYMGroup  # type: ignore
 from click_help_colors import HelpColorsGroup
@@ -28,8 +28,8 @@ class AdvancedGroup(ClickAliasedGroup, DYMGroup, HelpColorsGroup):  # type: igno
     def __init__(
         self,
         *args: Any,
-        aliases: Optional[list[str]] = None,
-        groups_package: Optional[ModuleType] = None,
+        aliases: None | list[str] = None,
+        groups_package: None | ModuleType = None,
         **kwargs: Any,
     ):
         kwargs["help_headers_color"] = "yellow"
@@ -39,7 +39,7 @@ class AdvancedGroup(ClickAliasedGroup, DYMGroup, HelpColorsGroup):  # type: igno
 
         @click.command("help")
         @click.pass_context
-        def _help(ctx: Optional[click.Context]) -> None:
+        def _help(ctx: None | click.Context) -> None:
             """Print help"""
             # we accept many commands, but only show help of the first one
             if not ctx:

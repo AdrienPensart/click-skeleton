@@ -1,10 +1,11 @@
 """Decorators and helpers to add options to groups and commands, and compose decorators"""
 
+from typing import Any, Iterable
+
 import click
-from beartype.typing import Any, Iterable, Union
 
 
-def flatten(iterables: Union[Any, Iterable[Any]]) -> Iterable[Any]:
+def flatten(iterables: Any | Iterable[Any]) -> Iterable[Any]:
     """Recursively flatten argument"""
     for element in iterables:
         if isinstance(element, Iterable) and not isinstance(element, (str, bytes)):
@@ -31,5 +32,5 @@ def group(name: str | None = None, **attrs: Any) -> Any:
     """
     from click_skeleton.advanced_group import AdvancedGroup
 
-    attrs.setdefault("cls", AdvancedGroup)
+    _ = attrs.setdefault("cls", AdvancedGroup)
     return click.command(name, **attrs)
