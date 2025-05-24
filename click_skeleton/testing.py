@@ -35,4 +35,4 @@ def run_cli(
             f"Failed : {cli_runner.get_default_prog_name(called_cli)} {elems}"
         )  # pylint:disable=logging-fstring-interpolation
     assert result.exit_code == 0
-    return result.output.rstrip()
+    return result.stdout.rstrip()

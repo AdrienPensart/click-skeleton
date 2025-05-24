@@ -1,6 +1,6 @@
 [project]
 name = "click-skeleton"
-version = "0.33.0"
+version = "0.33.1"
 description = "Click app skeleton"
 authors = [
     {name = "Adrien Pensart", email = "crunchengine@gmail.com"}
