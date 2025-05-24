@@ -29,7 +29,7 @@ def run_cli(
         exc_info = result.exc_info
         traceback.print_exception(*exc_info)  # type: ignore
     if result.exit_code != 0:
-        elems = helpers.recursive_str(*args)
+        elems = helpers.recursive_str(data=args)
         elems = " ".join(elems)
         logger.error(
             f"Failed : {cli_runner.get_default_prog_name(called_cli)} {elems}"

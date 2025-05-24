@@ -49,10 +49,10 @@ def clean_quotes(text: str) -> str:
 
 def recursive_str(data: Any) -> Any:
     """Recursively convert multiple data type to string"""
-    if isinstance(data, str):
-        return data
     if isinstance(data, list):
         return [recursive_str(x) for x in data]
+    if isinstance(data, str):
+        return data
     if isinstance(data, dict):
         return {recursive_str(key): recursive_str(val) for key, val in data.items()}
     return str(data)

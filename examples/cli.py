@@ -19,7 +19,12 @@ group_of_options = add_options(
 )
 
 
-@skeleton(name=PROG_NAME, version=__version__, auto_envvar_prefix="CLI")
+@skeleton(
+    name=PROG_NAME,
+    version=__version__,
+    auto_envvar_prefix="CLI",
+    invoke_without_command=True,
+)
 @click.pass_context
 @global_example_option
 @group_of_options
